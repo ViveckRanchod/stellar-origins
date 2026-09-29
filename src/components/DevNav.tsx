@@ -26,7 +26,7 @@ export function DevNav() {
     <details className="fixed top-4 right-4 z-50">
       <summary className="badge h-11 cursor-pointer list-none px-4">Dev · pages</summary>
       <nav className="panel absolute top-full right-0 mt-2 max-h-[70dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-2">
-        <p className="px-3 py-2 text-xs text-fog">All pages use Galaxy (background). On production you need to be signed in to open most pages.</p>
+        <p className="px-3 py-2 text-xs text-fog">All pages use Galaxy (background). Every page opens signed out; saving asks you to log in.</p>
         <ul>
           {pages.map((p) => (
             <li key={p.path}>

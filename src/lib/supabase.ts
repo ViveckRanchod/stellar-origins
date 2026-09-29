@@ -19,8 +19,10 @@ export async function supabase() {
   });
 }
 
-// Vercel previews and `next dev` let you view every page signed out (the dev nav relies on this). Never production.
-export const browseAll = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development";
+// Every page can be viewed signed out (the dev nav relies on this). Saving still needs a login.
+// ponytail: open everywhere while nobody uses the site (owner approved 2026-09-29). Before launch, set back to
+// process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development" (here and in proxy.ts).
+export const browseAll = true;
 
 // For pages: signed-in client + user, or bounce to login. With browseAll, user may be null.
 export async function pageUser() {
