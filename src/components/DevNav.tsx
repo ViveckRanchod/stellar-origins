@@ -19,14 +19,14 @@ const pages = [
   { path: "/done", name: "Done", uses: "(plain markup)" },
 ];
 
-// Floating page index for local dev and Vercel previews; never rendered on production.
+// Floating page index, shown everywhere including production while nobody else is using the site.
+// ponytail: remove <DevNav /> from layout.tsx before real students use it.
 export function DevNav() {
-  if (process.env.VERCEL_ENV === "production") return null;
   return (
     <details className="fixed top-4 right-4 z-50">
       <summary className="badge h-11 cursor-pointer list-none px-4">Dev · pages</summary>
       <nav className="panel absolute top-full right-0 mt-2 max-h-[70dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-2">
-        <p className="px-3 py-2 text-xs text-fog">All pages use Galaxy (background). Signed out on previews: pages show, saving asks you to log in.</p>
+        <p className="px-3 py-2 text-xs text-fog">All pages use Galaxy (background). On production you need to be signed in to open most pages.</p>
         <ul>
           {pages.map((p) => (
             <li key={p.path}>
