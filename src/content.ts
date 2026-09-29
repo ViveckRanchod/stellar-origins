@@ -48,14 +48,15 @@ export const account = {
   resetButton: "Save password",
 };
 
-// Activity 1 – Character build (every choice needs a justification)
+// Activity 1 – Character build (every choice needs a justification).
+// Wrap words in **double stars** to show them in bold (titles, instructions and question labels).
 export const characterBuild = {
-  activityName: "Character build",
+  activityName: "Choose Your Star",
 
   // 3. Choose your avatar (exactly 5)
   avatar: {
-    title: "Choose your avatar",
-    instruction: "TODO: Choose an avatar from the 5 below.",
+    title: "Choose Your Star",
+    instruction: "Choose an avatar from the 5 below that you are drawn to.",
     options: [
       { id: "avatar_1", name: "TODO Avatar 1", description: "TODO", image: "" },
       { id: "avatar_2", name: "TODO Avatar 2", description: "TODO", image: "" },
@@ -63,16 +64,17 @@ export const characterBuild = {
       { id: "avatar_4", name: "TODO Avatar 4", description: "TODO", image: "" },
       { id: "avatar_5", name: "TODO Avatar 5", description: "TODO", image: "" },
     ],
-    justification: "Why did you choose this avatar?",
+    justification: { text: "What about this one draws you to it? What does your choice represent or reflect about you?" } as Question,
     justificationPlaceholder: "TODO",
     button: "Next",
   },
 
   // 4. Customise character (8 options, pick 0–2)
   customize: {
-    title: "Customise your character",
-    instruction: "TODO: Choose none, one or two of the options below.",
+    title: "Make It Yours",
+    instruction: "Customise your character by choosing **up to two** elements that you would add to it.",
     max: 2,
+    skip: "Skip, I don’t want to customise my character",
     options: [
       { id: "opt_1", name: "TODO Option 1", description: "TODO", image: "" },
       { id: "opt_2", name: "TODO Option 2", description: "TODO", image: "" },
@@ -83,17 +85,23 @@ export const characterBuild = {
       { id: "opt_7", name: "TODO Option 7", description: "TODO", image: "" },
       { id: "opt_8", name: "TODO Option 8", description: "TODO", image: "" },
     ],
-    justification: "Why did you make these choices?",
+    justification: {
+      title: "What do your choices represent for you?",
+      text: "For each element, consider: **What does this represent, and why is it meaningful to you?**",
+    } as Question,
+    justificationHint: "If you choose not to customise your character, select “Skip” and briefly explain why.",
     justificationPlaceholder: "TODO",
     button: "Next",
   },
 
-  // 5. Where are you heading? (optional question)
+  // 5. Looking ahead (all optional)
   future: {
-    title: "Where are you heading for the future?",
-    question: "TODO: The future question.",
-    placeholder: "TODO",
+    title: "Looking Ahead",
     hint: "This question is optional.",
+    question: "Complete the sentence: **In the future, I’m heading toward…**",
+    placeholder: "TODO",
+    why: "Then consider: **Why is this meaningful to me?**",
+    needs: "What is one thing that would need to be true for me to move toward it?",
     button: "Next",
   },
 };

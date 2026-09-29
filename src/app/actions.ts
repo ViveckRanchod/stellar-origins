@@ -78,7 +78,9 @@ export async function saveStep(step: string, next: string, form: FormData) {
 }
 
 export async function saveCustomize(max: number, form: FormData) {
-  if (form.getAll("options").length > max) redirect(`/character/customize?error=${encodeURIComponent(`Pick at most ${max}.`)}`);
+  const picked = form.getAll("options");
+  if (picked.includes("skip") && picked.length > 1) redirect(`/character/customize?error=${encodeURIComponent("Choose Skip or some elements, not both.")}`);
+  if (picked.length > max) redirect(`/character/customize?error=${encodeURIComponent(`Pick at most ${max}.`)}`);
   await save("customize", form);
   redirect("/character/future");
 }
