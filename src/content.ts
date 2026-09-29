@@ -385,7 +385,14 @@ export const disruptions: Record<string, { name: string; description: string; im
 };
 
 // A question is free text, unless it has `options` (then it's a single choice).
-export type Question = { text: string; options?: string[] };
+// `title` is an optional bold heading shown above the question.
+export type Question = { title?: string; text: string; options?: string[] };
+
+// Asked on both the Individual Reflection and Move and Regroup pages.
+const craftYourResponse: Question = {
+  title: "Craft your response",
+  text: "What is one realistic change you could make to your tasks, relationships or perspective that could help you reconnect with that value or purpose? What would this protect for you?",
+};
 
 // Activity 3 – Disruption
 export const disruption = {
@@ -394,33 +401,40 @@ export const disruption = {
   noneLeft: "All disruptions have been assigned. Please ask a facilitator.",
   assignedButton: "Continue",
 
-  // 11. Answer a few questions. Same for every disruption.
+  // 11. Individual reflection. Same questions for every disruption.
   // ponytail: shared list; for per-disruption questions, move this into each disruption above.
   questions: {
-    title: "Answer a few questions",
+    title: "Individual Reflection",
     intro: "TODO: Intro text.",
     items: [
-      { text: "TODO Question 1" },
-      { text: "TODO Question 2" },
-      { text: "TODO Question 3 (choice example)", options: ["TODO A", "TODO B", "TODO C"] },
+      {
+        title: "What matters?",
+        text: "What is your first reaction to the disruption, and what does it reveal about what matters most to you at work? Think about the value, relationship, contribution or sense of purpose that feels most affected.",
+      },
+      {
+        title: "Reconnect with purpose",
+        text: "Before the disruption, what made this work meaningful to you? Has the disruption changed that purpose, or mainly changed how you can pursue it?",
+      },
+      craftYourResponse,
     ] as Question[],
     button: "Next",
   },
 
-  // 12. Chat to your friends
+  // 12. Move and regroup (with others who have the same disruption). Submit sends the results email.
   chat: {
-    title: "Chat to your friends",
-    instruction: "TODO: Instruction text.",
-    prompts: ["TODO Discussion prompt 1", "TODO Discussion prompt 2", "TODO Discussion prompt 3"],
-    time: "TODO: Suggested time, e.g. 10 minutes",
-    button: "Next",
-  },
-
-  // 13. More questions (with group)
-  group: {
-    title: "More questions (with your group)",
-    intro: "TODO: Intro text.",
-    items: [{ text: "TODO Question 1" }, { text: "TODO Question 2" }, { text: "TODO Question 3" }] as Question[],
+    title: "Move and Regroup",
+    instruction: "Find other stars who have been assigned the same scenario and discuss it with them.",
+    items: [
+      {
+        title: "Different perspectives",
+        text: "How did your responses differ, even when you were responding to the same type of disruption? What does this tell us about the role of individual values in experiencing meaning at work?",
+      },
+      {
+        title: "Different ways of crafting",
+        text: "What different ways did your group identify to respond? Which involved changing what you do, who you work with or lean on, or how you think about the work?",
+      },
+      craftYourResponse,
+    ] as Question[],
     button: "Submit",
   },
 };

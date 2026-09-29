@@ -20,7 +20,6 @@ const steps = [
   "/disruption",
   "/disruption/questions",
   "/disruption/chat",
-  "/disruption/group",
 ];
 
 export function BackLink() {
