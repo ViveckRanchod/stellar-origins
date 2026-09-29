@@ -397,11 +397,6 @@ export const disruptions: Record<string, { name: string; description: string; im
 // `title` is an optional bold heading shown above the question.
 export type Question = { title?: string; text: string; options?: string[] };
 
-// Asked on both the Individual Reflection and Move and Regroup pages.
-const craftYourResponse: Question = {
-  title: "Craft your response",
-  text: "What is one realistic change you could make to your tasks, relationships or perspective that could help you reconnect with that value or purpose? What would this protect for you?",
-};
 
 // Activity 3 – Disruption
 export const disruption = {
@@ -424,7 +419,10 @@ export const disruption = {
         title: "Reconnect with purpose",
         text: "Before the disruption, what made this work meaningful to you? Has the disruption changed that purpose, or mainly changed how you can pursue it?",
       },
-      craftYourResponse,
+      {
+        title: "Craft your response",
+        text: "What is one realistic change you could make to your tasks, relationships or perspective that could help you reconnect with that value or purpose? What would this protect for you?",
+      },
     ] as Question[],
     button: "Next",
   },
@@ -442,7 +440,10 @@ export const disruption = {
         title: "Different ways of crafting",
         text: "What different ways did your group identify to respond? Which involved changing what you do, who you work with or lean on, or how you think about the work?",
       },
-      craftYourResponse,
+      {
+        title: "The bigger picture",
+        text: "Where can job crafting help people maintain or reconstruct meaning, and where are there limits to what an individual can change?",
+      },
     ] as Question[],
     button: "Submit",
   },
