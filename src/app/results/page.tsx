@@ -1,13 +1,8 @@
 import { BackLink } from "@/components/BackLink";
-import { LinkButton, Title } from "@/components/kit";
+import { LinkButton, Rich, Title } from "@/components/kit";
 import Stack from "@/components/Stack";
 import { galaxyHeadings, results } from "@/content";
 import { galaxyScores } from "@/lib/supabase";
-
-// Turns **word** into bold, so profile text in content.ts can mark key words.
-function Rich({ text }: { text: string }) {
-  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-semibold text-lilac">{part}</strong> : part));
-}
 
 // 8. Results: a deck of galaxy cards (top match on top), then every full profile, highest score first.
 export default async function ResultsPage() {

@@ -60,7 +60,11 @@ export function Page({
       <header className="flex flex-col items-center gap-4 text-center">
         {badge && <span className="badge">{badge}</span>}
         <Title text={title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
-        {subtitle && <p className="text-lg text-ash">{subtitle}</p>}
+        {subtitle && (
+          <p className="text-lg text-ash">
+            <Rich text={subtitle} />
+          </p>
+        )}
       </header>
       {children}
     </main>
@@ -102,7 +106,7 @@ export function TextField({
   required,
 }: {
   name: string;
-  label: React.ReactNode;
+  label: string | Question;
   placeholder?: string;
   hint?: string;
   required?: boolean;
@@ -110,12 +114,17 @@ export function TextField({
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={name} className="text-[15px] leading-snug text-lilac">
-        {label}
+        <QuestionLabel q={typeof label === "string" ? { text: label } : label} />
       </Label>
       {hint && <p className="text-sm text-fog">{hint}</p>}
       <Textarea id={name} name={name} placeholder={placeholder} required={required} rows={4} />
     </div>
   );
+}
+
+// Turns **word** into bold, so text in content.ts can mark key words.
+export function Rich({ text }: { text: string }) {
+  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-semibold text-lilac">{part}</strong> : part));
 }
 
 // Image, or a placeholder circle until real art is added in content.ts.
@@ -165,11 +174,13 @@ export function ChoiceGrid({
 
 // A question's optional bold title above its text.
 function QuestionLabel({ q }: { q: Question }) {
-  if (!q.title) return q.text;
+  if (!q.title) return <span><Rich text={q.text} /></span>;
   return (
     <span className="flex flex-col gap-1">
       <strong className="font-semibold">{q.title}</strong>
-      <span className="text-ash">{q.text}</span>
+      <span className="text-ash">
+        <Rich text={q.text} />
+      </span>
     </span>
   );
 }
@@ -180,7 +191,9 @@ export function Questions({ items }: { items: Question[] }) {
   return items.map((q, i) =>
     q.options ? (
       <fieldset key={i} className="flex flex-col gap-2">
-        <legend className="mb-2 text-[15px] text-lilac"><QuestionLabel q={q} /></legend>
+        <legend className="mb-2 text-[15px] text-lilac">
+          <QuestionLabel q={q} />
+        </legend>
         {q.options.map((opt) => (
           <label key={opt} className="panel flex cursor-pointer items-center gap-3 px-4 py-3 text-ash has-checked:bg-indigo has-checked:text-lilac">
             <input type="radio" name={`answer_${i + 1}`} value={opt} required className="accent-lavender" />
@@ -189,7 +202,7 @@ export function Questions({ items }: { items: Question[] }) {
         ))}
       </fieldset>
     ) : (
-      <TextField key={i} name={`answer_${i + 1}`} label={<QuestionLabel q={q} />} required />
+      <TextField key={i} name={`answer_${i + 1}`} label={q} required />
     ),
   );
 }
