@@ -385,12 +385,52 @@ export const intermission2 = {
   button: "Hit next",
 };
 
-// 10. Disruptions. Ids d1–d4 must match supabase/schema.sql.
-export const disruptions: Record<string, { name: string; description: string; image: string }> = {
-  d1: { name: "TODO Disruption 1", description: "TODO: Scenario description.", image: "" },
-  d2: { name: "TODO Disruption 2", description: "TODO: Scenario description.", image: "" },
-  d3: { name: "TODO Disruption 3", description: "TODO: Scenario description.", image: "" },
-  d4: { name: "TODO Disruption 4", description: "TODO: Scenario description.", image: "" },
+// 10. Disruptions. Ids d1–d4 must match supabase/schema.sql. Each student is handed one, in turn (d1, d2, d3, d4, d1, …).
+// `description` is a list of paragraphs.
+export const disruptions: Record<string, { name: string; description: string[]; image: string }> = {
+  d1: {
+    name: "Restructuring",
+    description: [
+      "You have spent two years as the HR Business Partner for two departments, gradually building strong relationships with managers and employees. People come to you for guidance, and you take pride in supporting both the people and the business.",
+      "This morning, leadership announces that the two departments will merge into one function next month. You can see the logic behind the decision. The current structure has caused duplication and confusion, and you have previously suggested that a more integrated structure could work better.",
+      "However, the new structure has not been finalised yet. Leadership says there is “some overlap in HR support roles”, but no one can tell you exactly what this means for your position. Your manager tells you privately that she does not yet know whether your role will continue as it is, change significantly, or disappear altogether.",
+      "You support the change, but you are now uncertain where you fit in the future you helped advocate for.",
+    ],
+    image: "",
+  },
+  d2: {
+    name: "Project cancellation",
+    description: [
+      "Eight months ago, you proposed a new employee wellbeing and engagement initiative. It was not an obvious priority for the organisation, but you believed it could genuinely make a difference for employees.",
+      "You developed the proposal, secured a modest budget and led the project from its launch. Over time, the initiative became something you were proud to be associated with. Recent engagement results showed a positive shift in the areas the programme was designed to address.",
+      "This morning, you receive an email informing you that the initiative is being deprioritised with immediate effect and the working group is being disbanded. You later learn that another team’s initiative has been chosen instead. It costs less and has outcomes that are easier to demonstrate to senior leadership.",
+      "Your project did not fail. However, the work you cared about is no longer a priority, and the organisation has moved on.",
+      "You still believe employee wellbeing matters. You are now left wondering how, or whether, you can continue pursuing that purpose through your work.",
+    ],
+    image: "",
+  },
+  d3: {
+    name: "Leadership change",
+    description: [
+      "Your Head of Talent has led the Learning and Development function for three years. You have become accustomed to her leadership style. She gives you space to work independently, trusts you to solve problems and supports you publicly, even when she challenges you privately.",
+      "At the same time, you have sometimes felt frustrated by her reluctance to address certain performance issues within the team. You value the autonomy she gives you, but you also recognise the limitations of her leadership style.",
+      "She announces that she is leaving the organisation. Two weeks later, her replacement arrives from the Finance division. Your new manager takes a very different approach: they are highly involved, strongly focused on measurable outcomes, and expect clear evidence of return on investment from every programme.",
+      "Within your first month, you are asked to provide more frequent reports, justify decisions that previously required little explanation and obtain approval for changes you would previously have made independently.",
+      "Nothing about your job title has changed. But the way you experience and perform your work has.",
+    ],
+    image: "",
+  },
+  d4: {
+    name: "Resource cut",
+    description: [
+      "You manage an employee wellbeing programme that has gradually become an important part of the organisation. It is relationship-focused, and its impact is not always easy to capture in a quarterly report, but employees regularly attend, and several have privately told you that the programme made a meaningful difference during difficult periods.",
+      "You have spent the past year building the programme largely through your own initiative. The budget has never been large, but it has been enough to keep the programme running consistently.",
+      "During this quarter’s planning meeting, you are told that the programme’s budget will be reduced by more than half as part of a company-wide efficiency drive. Leadership explains that the programme’s impact is “difficult to measure”. You know this is a fair criticism. Although you have collected positive feedback, you never built a strong system to demonstrate longer-term outcomes.",
+      "You are now expected to deliver similar outcomes with significantly fewer resources. No one has suggested that the programme is unimportant, but the way you can deliver it has fundamentally changed.",
+      "You still believe the work matters. You now have to decide what that means when you cannot do the work in the same way.",
+    ],
+    image: "",
+  },
 };
 
 // A question is free text, unless it has `options` (then it's a single choice).
