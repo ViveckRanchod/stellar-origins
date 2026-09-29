@@ -103,11 +103,12 @@ export const intermission1 = {
 // Activity 2 – Culture fit. Galaxy ids (A–D) are stored with every quiz answer.
 export type GalaxyId = "A" | "B" | "C" | "D";
 
+// Images: public-domain NASA/ESA Hubble photos, see public/galaxies/CREDITS.txt
 export const galaxies: Record<GalaxyId, { name: string; tagline: string; description: string; image: string }> = {
-  A: { name: "TODO Galaxy A", tagline: "TODO", description: "TODO: Profile description.", image: "" },
-  B: { name: "TODO Galaxy B", tagline: "TODO", description: "TODO: Profile description.", image: "" },
-  C: { name: "TODO Galaxy C", tagline: "TODO", description: "TODO: Profile description.", image: "" },
-  D: { name: "TODO Galaxy D", tagline: "TODO", description: "TODO: Profile description.", image: "" },
+  A: { name: "TODO Galaxy A", tagline: "TODO", description: "TODO: Profile description.", image: "/galaxies/whirlpool.jpg" },
+  B: { name: "TODO Galaxy B", tagline: "TODO", description: "TODO: Profile description.", image: "/galaxies/sombrero.jpg" },
+  C: { name: "TODO Galaxy C", tagline: "TODO", description: "TODO: Profile description.", image: "/galaxies/barred-spiral.jpg" },
+  D: { name: "TODO Galaxy D", tagline: "TODO", description: "TODO: Profile description.", image: "/galaxies/antennae.jpg" },
 };
 
 export const quiz = {
@@ -157,6 +158,8 @@ export const questions = [
 export const results = {
   title: "Your galaxies",
   intro: "TODO: Intro text for results.",
+  deckHint: "Swipe or tap the card to see your next galaxy",
+  rank: (n: number) => `#${n} match`,
   button: "Continue",
 };
 

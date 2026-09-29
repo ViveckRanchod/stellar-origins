@@ -1,12 +1,45 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
+import SplitText from "@/components/SplitText";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { Question } from "@/content";
 
-// Mobile first: full-width 44px tap targets on phones, compact from sm up.
-const cta = cn(buttonVariants(), "h-11 w-full px-4 text-[15px] sm:h-10 sm:w-auto");
+// Pill CTA. Mobile first: full-width 48px on phones, content-width from sm.
+// White pill with a soft white glow; glows brighter on hover, presses in on tap, arrow nudges forward.
+const cta = cn(
+  buttonVariants(),
+  "group/cta h-12 w-full gap-2 rounded-full px-7 text-[15px] font-medium sm:h-11 sm:w-auto",
+  "bg-white text-black shadow-[0_0_24px_-8px_rgb(255_255_255/0.6)] hover:bg-white",
+  "transition-[transform,box-shadow,background-color] duration-200 hover:shadow-[0_0_36px_-4px_rgb(255_255_255/0.75)] active:scale-[0.97] active:bg-lilac",
+);
+
+function Arrow() {
+  return <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover/cta:translate-x-0.5" />;
+}
+
+// Page/hero title: letters rise in on load (React Bits SplitText). `cosmic` keeps the gradient by animating per line.
+export function Title({ text, cosmic, className }: { text: string; cosmic?: boolean; className?: string }) {
+  return (
+    <SplitText
+      tag="h1"
+      text={text}
+      className={cn(cosmic && "[&_.split-line]:text-cosmic", className)}
+      splitType={cosmic ? "lines" : "chars"}
+      delay={cosmic ? 120 : 30}
+      duration={0.8}
+      ease="power3.out"
+      from={{ opacity: 0, y: 40 }}
+      to={{ opacity: 1, y: 0 }}
+      threshold={0}
+      rootMargin="0px"
+      textAlign="center"
+    />
+  );
+}
 
 export function Page({
   badge,
@@ -22,10 +55,11 @@ export function Page({
   children?: React.ReactNode;
 }) {
   return (
-    <main className={cn("mx-auto flex flex-col gap-6 px-4 py-10 sm:gap-8 sm:px-6 sm:py-24", wide ? "max-w-4xl" : "max-w-xl")}>
+    <main className={cn("mx-auto flex flex-col gap-6 px-4 py-4 sm:gap-8 sm:px-6 sm:py-12", wide ? "max-w-4xl" : "max-w-xl")}>
+      <BackLink />
       <header className="flex flex-col items-center gap-4 text-center">
         {badge && <span className="badge">{badge}</span>}
-        <h1 className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl">{title}</h1>
+        <Title text={title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
         {subtitle && <p className="text-lg text-ash">{subtitle}</p>}
       </header>
       {children}
@@ -37,6 +71,7 @@ export function Submit({ children }: { children: React.ReactNode }) {
   return (
     <Button type="submit" className={cn(cta, "sm:self-end")}>
       {children}
+      <Arrow />
     </Button>
   );
 }
@@ -45,6 +80,7 @@ export function LinkButton({ href, children }: { href: string; children: React.R
   return (
     <Link href={href} className={cn(cta, "sm:self-center")}>
       {children}
+      <Arrow />
     </Link>
   );
 }
@@ -150,7 +186,7 @@ export function Questions({ items }: { items: Question[] }) {
 export function Intermission({ title, lines, href, button }: { title: string; lines: string[]; href: string; button: string }) {
   return (
     <Page title={title}>
-      <div className="panel flex flex-col gap-3 p-8 text-center text-ash">
+      <div className="panel flex flex-col gap-3 p-6 text-center text-ash sm:p-8">
         {lines.map((l) => (
           <p key={l}>{l}</p>
         ))}

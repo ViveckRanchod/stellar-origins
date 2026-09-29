@@ -1,13 +1,11 @@
-import { LinkButton } from "@/components/kit";
+import { LinkButton, Title } from "@/components/kit";
 import { landing } from "@/content";
 
 // 1. Landing page
 export default function Landing() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-center gap-10 px-4 text-center">
-      <h1 className="text-5xl leading-[1.11] tracking-[-0.5px] sm:text-[72px]">
-        <span className="text-cosmic">{landing.welcome}</span>
-      </h1>
+      <Title text={landing.welcome} cosmic className="text-5xl leading-[1.11] tracking-[-0.5px] sm:text-[72px]" />
       <div className="aurora w-full max-w-md" />
       <figure className="flex flex-col gap-3">
         <blockquote className="text-lg text-ash">“{landing.quote}”</blockquote>

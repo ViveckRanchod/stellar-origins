@@ -1,0 +1,10 @@
+Galaxy photos (all public domain, via Wikimedia Commons, resized to 1280px wide)
+
+whirlpool.jpg      Whirlpool Galaxy (M51)            NASA and ESA
+                   https://commons.wikimedia.org/wiki/File:Messier51_sRGB.jpg
+sombrero.jpg       Sombrero Galaxy (M104)            NASA/ESA and The Hubble Heritage Team (STScI/AURA)
+                   https://commons.wikimedia.org/wiki/File:M104_ngc4594_sombrero_galaxy_hi-res.jpg
+barred-spiral.jpg  Barred spiral galaxy NGC 1300     NASA, ESA, and The Hubble Heritage Team (STScI/AURA)
+                   https://commons.wikimedia.org/wiki/File:Hubble2005-01-barred-spiral-galaxy-NGC1300.jpg
+antennae.jpg       Antennae Galaxies (NGC 4038/4039) NASA, ESA, and the Hubble Heritage Team (STScI/AURA)-ESA/Hubble Collaboration
+                   https://commons.wikimedia.org/wiki/File:Antennae_galaxies_xl.jpg
