@@ -1,7 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { final } from "@/content";
+import { account, final } from "@/content";
 import { galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
 
 function back(mode: string, msg: string): never {
@@ -35,6 +36,26 @@ export async function signIn(form: FormData) {
     password: String(form.get("password") ?? ""),
   });
   if (error) back("login", error.message);
+  redirect(await resumePath());
+}
+
+export async function requestReset(form: FormData) {
+  const email = String(form.get("email") ?? "").trim();
+  const origin = (await headers()).get("origin");
+  const db = await supabase();
+  // ponytail: PKCE link only works in the browser that asked for it. Other-device links need a custom
+  // Supabase email template using {{ .TokenHash }} + verifyOtp.
+  const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/auth/reset` });
+  if (error) back("forgot", error.message);
+  back("login", account.forgotSent); // same message whether or not the email exists
+}
+
+export async function setPassword(form: FormData) {
+  const password = String(form.get("password") ?? "");
+  if (password.length < 6) back("reset", "Passwords need at least 6 characters.");
+  const { db } = await requireUser();
+  const { error } = await db.auth.updateUser({ password });
+  if (error) back("reset", error.message);
   redirect(await resumePath());
 }
 

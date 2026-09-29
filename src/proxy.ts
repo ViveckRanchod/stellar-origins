@@ -18,7 +18,7 @@ export async function proxy(request: NextRequest) {
 
   const { data } = await db.auth.getUser();
   const path = request.nextUrl.pathname;
-  const isPublic = path === "/" || path === "/signup";
+  const isPublic = path === "/" || path === "/signup" || path === "/auth/reset";
   // Same rule as browseAll in lib/supabase.ts (currently open everywhere, restore before launch).
   const browseAll = true;
   if (!data.user && !isPublic && !browseAll) return NextResponse.redirect(new URL("/signup?mode=login", request.url));
