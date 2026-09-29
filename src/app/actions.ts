@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { account, final } from "@/content";
-import { galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
+import { browseAll, galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
 
 function back(mode: string, msg: string): never {
   redirect(`/signup?mode=${mode}&error=${encodeURIComponent(msg)}`);
@@ -57,6 +57,16 @@ export async function setPassword(form: FormData) {
   const { error } = await db.auth.updateUser({ password });
   if (error) back("reset", error.message);
   redirect(await resumePath());
+}
+
+// Testing only (button on /done while browseAll): wipes this user's answers so the flow can be run again.
+// The disruption slot is kept, so a retest gets the same disruption.
+export async function restart() {
+  if (!browseAll) return;
+  const { db, user } = await requireUser();
+  const { error } = await db.from("responses").delete().eq("user_id", user.id);
+  if (error) throw error;
+  redirect("/character/avatar");
 }
 
 // Stores every field of a step's form as one JSON answer, then moves on.

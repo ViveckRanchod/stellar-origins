@@ -502,6 +502,7 @@ export const final = {
   title: "Thanks for participating!",
   message: "Check your inbox for your results.",
   closing: "TODO: Optional closing line.",
+  restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins results",
     intro: "TODO: Email intro text.",
