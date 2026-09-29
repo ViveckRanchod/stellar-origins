@@ -37,9 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             twinkleIntensity={0.2}
           />
         </div>
+        <DevNav />
         {children}
         <ClickSpark sparkColor="#f4f0ff" sparkSize={10} sparkRadius={18} sparkCount={8} duration={400} />
-        <DevNav />
       </body>
     </html>
   );

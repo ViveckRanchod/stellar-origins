@@ -1,45 +1,63 @@
-import Link from "next/link";
+import CardNav, { type CardNavItem } from "@/components/CardNav";
 
-// Every page in flow order, with the components it's built from (kit.tsx unless noted).
+// Every page, grouped by activity, with the components it's built from (kit.tsx unless noted).
 // ponytail: hand-kept list; update it when a page or its components change.
-const pages = [
-  { path: "/", name: "Landing", uses: "LinkButton" },
-  { path: "/signup", name: "Sign up / log in", uses: "Page, Notice, Submit, ui/Input, ui/Label" },
-  { path: "/character/avatar", name: "Choose avatar", uses: "Page, ChoiceGrid, TextField, Submit" },
-  { path: "/character/customize", name: "Customise", uses: "Page, ChoiceGrid, TextField, Notice, Submit" },
-  { path: "/character/future", name: "Future self", uses: "Page, TextField, Submit" },
-  { path: "/intermission/culture", name: "Intermission: culture", uses: "Intermission" },
-  { path: "/quiz/1", name: "Quiz (1 of 20)", uses: "Page, Submit" },
-  { path: "/results", name: "Results", uses: "Page, Picture, LinkButton" },
-  { path: "/intermission/disruption", name: "Intermission: disruption", uses: "Intermission" },
-  { path: "/disruption", name: "Assigned disruption (uses a slot if signed in)", uses: "Page, Picture, Notice, LinkButton" },
-  { path: "/disruption/questions", name: "Disruption questions", uses: "Page, Questions, Submit" },
-  { path: "/disruption/chat", name: "Group chat", uses: "Page, LinkButton" },
-  { path: "/disruption/group", name: "Group questions", uses: "Page, Questions, Submit" },
-  { path: "/done", name: "Done", uses: "(plain markup)" },
+const items: CardNavItem[] = [
+  {
+    label: "Start & character",
+    bgColor: "#10093a",
+    textColor: "#f4f0ff",
+    links: [
+      { label: "Landing", href: "/", note: "Title, LinkButton" },
+      { label: "Sign up / log in", href: "/signup", note: "Page, Notice, Submit, ui/Input" },
+      { label: "Choose avatar", href: "/character/avatar", note: "Page, ChoiceGrid, TextField" },
+      { label: "Customise", href: "/character/customize", note: "Page, ChoiceGrid, TextField" },
+      { label: "Future self", href: "/character/future", note: "Page, TextField, Submit" },
+    ],
+  },
+  {
+    label: "Culture fit",
+    bgColor: "#1a1150",
+    textColor: "#f4f0ff",
+    links: [
+      { label: "Intermission", href: "/intermission/culture", note: "Intermission" },
+      { label: "Quiz, question 1", href: "/quiz/1", note: "Page, Submit" },
+      { label: "Quiz, question 20", href: "/quiz/20", note: "Page, Submit" },
+      { label: "Results", href: "/results", note: "Title, Stack deck, LinkButton" },
+    ],
+  },
+  {
+    label: "Disruption",
+    bgColor: "#241a66",
+    textColor: "#f4f0ff",
+    links: [
+      { label: "Intermission", href: "/intermission/disruption", note: "Intermission" },
+      { label: "Assigned disruption", href: "/disruption", note: "Page, Picture (uses a slot if signed in)" },
+      { label: "Questions", href: "/disruption/questions", note: "Page, Questions, Submit" },
+      { label: "Group chat", href: "/disruption/chat", note: "Page, LinkButton" },
+      { label: "Group questions", href: "/disruption/group", note: "Page, Questions, Submit" },
+      { label: "Done", href: "/done", note: "Title" },
+    ],
+  },
 ];
 
-// Floating page index, shown everywhere including production while nobody else is using the site.
-// ponytail: remove <DevNav /> from layout.tsx before real students use it.
+// Dev page nav (React Bits CardNav), shown everywhere while nobody else is using the site.
+// It sits in the page flow; --nav-h lets full-height pages subtract it.
+// ponytail: remove <DevNav /> from layout.tsx before real students use it (--nav-h then falls back to 0).
 export function DevNav() {
   return (
-    <details className="fixed top-4 right-4 z-50">
-      <summary className="badge h-11 cursor-pointer list-none px-4">Dev · pages</summary>
-      <nav className="panel absolute top-full right-0 mt-2 max-h-[70dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-2">
-        <p className="px-3 py-2 text-xs text-fog">All pages use Galaxy (background). Every page opens signed out; saving asks you to log in.</p>
-        <ul>
-          {pages.map((p) => (
-            <li key={p.path}>
-              <Link href={p.path} className="flex flex-col rounded-[5px] px-3 py-2 hover:bg-indigo">
-                <span className="text-sm text-lilac">{p.name}</span>
-                <span className="font-mono text-[11px] text-fog">
-                  {p.path} · {p.uses}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </details>
+    <>
+      <style>{`:root{--nav-h:72px}`}</style>
+      <CardNav
+        logo="Stellar Origins · dev"
+        items={items}
+        cta={{ label: "Start", href: "/signup" }}
+        className="mt-3"
+        baseColor="#060317"
+        menuColor="#f4f0ff"
+        buttonBgColor="#ffffff"
+        buttonTextColor="#000000"
+      />
+    </>
   );
 }

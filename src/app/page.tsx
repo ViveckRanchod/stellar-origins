@@ -4,7 +4,7 @@ import { landing } from "@/content";
 // 1. Landing page
 export default function Landing() {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-center gap-10 px-4 text-center">
+    <main className="mx-auto flex min-h-[calc(100dvh-var(--nav-h,0px))] max-w-3xl flex-col items-center justify-center gap-10 px-4 text-center">
       <Title text={landing.welcome} cosmic className="text-5xl leading-[1.11] tracking-[-0.5px] sm:text-[72px]" />
       <div className="aurora w-full max-w-md" />
       <figure className="flex flex-col gap-3">

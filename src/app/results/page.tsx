@@ -31,7 +31,7 @@ export default async function ResultsPage() {
   ));
 
   return (
-    <main className="mx-auto flex h-dvh max-w-3xl flex-col gap-4 [overflow-x:clip] px-4 py-4 sm:gap-6 sm:px-6 sm:py-8">
+    <main className="mx-auto flex h-[calc(100dvh-var(--nav-h,0px))] max-w-3xl flex-col gap-4 [overflow-x:clip] px-4 py-4 sm:gap-6 sm:px-6 sm:py-8">
       <BackLink />
       <header className="flex flex-col items-center gap-2 text-center">
         <Title text={results.title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
