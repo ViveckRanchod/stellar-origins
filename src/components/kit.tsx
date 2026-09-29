@@ -102,7 +102,7 @@ export function TextField({
   required,
 }: {
   name: string;
-  label: string;
+  label: React.ReactNode;
   placeholder?: string;
   hint?: string;
   required?: boolean;
@@ -163,13 +163,24 @@ export function ChoiceGrid({
   );
 }
 
+// A question's optional bold title above its text.
+function QuestionLabel({ q }: { q: Question }) {
+  if (!q.title) return q.text;
+  return (
+    <span className="flex flex-col gap-1">
+      <strong className="font-semibold">{q.title}</strong>
+      <span className="text-ash">{q.text}</span>
+    </span>
+  );
+}
+
 // Renders a list of content questions: free text, or single choice when `options` is set.
 // Answers are stored as answer_1, answer_2, ... in question order.
 export function Questions({ items }: { items: Question[] }) {
   return items.map((q, i) =>
     q.options ? (
       <fieldset key={i} className="flex flex-col gap-2">
-        <legend className="mb-2 text-[15px] text-lilac">{q.text}</legend>
+        <legend className="mb-2 text-[15px] text-lilac"><QuestionLabel q={q} /></legend>
         {q.options.map((opt) => (
           <label key={opt} className="panel flex cursor-pointer items-center gap-3 px-4 py-3 text-ash has-checked:bg-indigo has-checked:text-lilac">
             <input type="radio" name={`answer_${i + 1}`} value={opt} required className="accent-lavender" />
@@ -178,7 +189,7 @@ export function Questions({ items }: { items: Question[] }) {
         ))}
       </fieldset>
     ) : (
-      <TextField key={i} name={`answer_${i + 1}`} label={q.text} required />
+      <TextField key={i} name={`answer_${i + 1}`} label={<QuestionLabel q={q} />} required />
     ),
   );
 }
