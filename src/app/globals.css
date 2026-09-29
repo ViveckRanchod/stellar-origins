@@ -2,13 +2,15 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Design language: "starlit violet cosmos" (Design language.md). Dark only. */
+/* Design language: "starlit violet cosmos" (Design language.md). Dark only. Mobile first. */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-display);
+  --font-sans: var(--font-hanken);
+  --font-heading: var(--font-hanken);
+  --font-num: var(--font-barlow); /* scores, percentages, stats */
+  --font-mono: var(--font-jetbrains); /* badges, eyebrows: always uppercase + tracked */
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -43,7 +45,7 @@
 
 :root {
   color-scheme: dark;
-  --background: #030014;
+  --background: #000000; /* pure black behind the Galaxy */
   --foreground: #f4f0ff;
   --card: #060317;
   --card-foreground: #f4f0ff;
@@ -70,19 +72,12 @@
   }
   html {
     @apply font-sans;
-    font-feature-settings: "calt" 0, "cv10", "liga" 0, "ss01";
   }
   body {
     @apply text-foreground;
-    /* Star field: tiny low-opacity dots tiled at co-prime sizes so the pattern doesn't visibly repeat */
+    overflow-x: clip; /* mobile first: the page never scrolls sideways */
+    /* The animated Galaxy (layout.tsx) paints over this; the void colour shows while it loads */
     background-color: var(--background);
-    background-image:
-      radial-gradient(1px 1px at 23px 41px, rgb(255 255 255 / 0.35), transparent),
-      radial-gradient(1px 1px at 157px 97px, rgb(255 255 255 / 0.25), transparent),
-      radial-gradient(1.5px 1.5px at 89px 173px, rgb(255 255 255 / 0.3), transparent),
-      radial-gradient(1px 1px at 211px 13px, rgb(255 255 255 / 0.2), transparent);
-    background-size: 241px 241px, 317px 317px, 383px 383px, 229px 229px;
-    background-attachment: fixed;
   }
   h1, h2, h3 {
     @apply font-heading font-medium text-lilac; /* Headings are weight 500, never bold */
@@ -106,8 +101,11 @@
   border: 1px solid var(--color-iris);
   background: var(--color-midnight);
   box-shadow: rgb(164 143 255 / 0.12) 0 -7px 11px 0 inset;
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--color-lilac);
 }
 

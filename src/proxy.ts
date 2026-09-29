@@ -19,7 +19,9 @@ export async function proxy(request: NextRequest) {
   const { data } = await db.auth.getUser();
   const path = request.nextUrl.pathname;
   const isPublic = path === "/" || path === "/signup";
-  if (!data.user && !isPublic) return NextResponse.redirect(new URL("/signup?mode=login", request.url));
+  // Same rule as browseAll in lib/supabase.ts: previews and next dev can view every page signed out.
+  const browseAll = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development";
+  if (!data.user && !isPublic && !browseAll) return NextResponse.redirect(new URL("/signup?mode=login", request.url));
   return response;
 }
 

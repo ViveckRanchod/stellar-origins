@@ -19,7 +19,18 @@ export async function supabase() {
   });
 }
 
-// Signed-in client + user, or bounce to login.
+// Vercel previews and `next dev` let you view every page signed out (the dev nav relies on this). Never production.
+export const browseAll = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development";
+
+// For pages: signed-in client + user, or bounce to login. With browseAll, user may be null.
+export async function pageUser() {
+  const db = await supabase();
+  const { data } = await db.auth.getUser();
+  if (!data.user && !browseAll) redirect("/signup?mode=login");
+  return { db, user: data.user };
+}
+
+// For saving: always needs a real signed-in user.
 export async function requireUser() {
   const db = await supabase();
   const { data } = await db.auth.getUser();
@@ -39,7 +50,7 @@ const flow = [
 
 // Galaxy percentages from the student's quiz answers, highest first.
 export async function galaxyScores() {
-  const { db } = await requireUser();
+  const { db } = await pageUser();
   const { data } = await db.from("responses").select("answer").like("step", "q%");
   const counts: Record<string, number> = { A: 0, B: 0, C: 0, D: 0 };
   data?.forEach((r) => {
