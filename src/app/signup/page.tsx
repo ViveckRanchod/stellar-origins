@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signIn, signUp } from "@/app/actions";
+import { requestReset, setPassword, signIn, signUp } from "@/app/actions";
 import { Notice, Page, Submit } from "@/components/kit";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,29 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
   const { mode, error } = await searchParams;
   const login = mode === "login";
   const f = account.fields;
+
+  // Forgotten password: ?mode=forgot asks for the email, ?mode=reset (after the email link) sets a new one.
+  if (mode === "forgot" || mode === "reset") {
+    const forgot = mode === "forgot";
+    return (
+      <Page title={forgot ? account.forgotTitle : account.resetTitle} subtitle={forgot ? account.forgotIntro : undefined}>
+        <Notice>{error}</Notice>
+        <form action={forgot ? requestReset : setPassword} className="panel flex flex-col gap-5 p-6 sm:p-8">
+          {forgot ? (
+            <Field name="email" type="email" autoComplete="email" {...f.email} />
+          ) : (
+            <Field name="password" type="password" minLength={6} autoComplete="new-password" {...f.password} label={account.resetPassword} />
+          )}
+          <Submit>{forgot ? account.forgotButton : account.resetButton}</Submit>
+        </form>
+        <p className="text-center text-sm text-fog">
+          <Link href="/signup?mode=login" className="text-lavender hover:text-lilac">
+            Back to sign in
+          </Link>
+        </p>
+      </Page>
+    );
+  }
 
   return (
     <Page title={login ? account.loginTitle : account.title} subtitle={login ? undefined : account.intro}>
@@ -23,6 +46,11 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
           </div>
         )}
         <Field name="password" type="password" minLength={6} autoComplete={login ? "current-password" : "new-password"} {...f.password} />
+        {login && (
+          <Link href="/signup?mode=forgot" className="-mt-2 self-end text-sm text-lavender hover:text-lilac">
+            {account.forgotLink}
+          </Link>
+        )}
 
         {!login && (
           <>

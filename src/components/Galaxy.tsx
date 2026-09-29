@@ -168,6 +168,9 @@ void main() {
     vec3 ink = clamp(col * 0.48, 0.0, 0.82);
     gl_FragColor = vec4(mix(vec3(1.0), ink, coverage), 1.0);
   } else if (uTransparent) {
+    // Stellar Origins: black point. Drops the faint glow that piles up between stars (grey haze) so the
+    // background stays black and stars stay crisp. Raise 0.04 for darker space, lower it for more glow.
+    col = max(col - 0.04, 0.0);
     float alpha = length(col);
     alpha = smoothstep(0.0, 0.3, alpha);
     alpha = min(alpha, 1.0);

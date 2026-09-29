@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${sans.variable} ${num.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-full">
-        <div aria-hidden className="fixed inset-0 -z-10 opacity-70">
+        <div aria-hidden className="fixed inset-0 -z-10">
           <Galaxy
             mouseInteraction={false}
             mouseRepulsion={false}

@@ -37,6 +37,15 @@ export const account = {
   // Returning students
   loginTitle: "Welcome back",
   loginButton: "Sign in",
+  // Forgotten password
+  forgotLink: "Forgot your password?",
+  forgotTitle: "Reset your password",
+  forgotIntro: "Enter your email and we'll send you a link to choose a new password.",
+  forgotButton: "Send reset link",
+  forgotSent: "If that email has an account, a reset link is on its way. Open it on this device.",
+  resetTitle: "Choose a new password",
+  resetPassword: "New password",
+  resetButton: "Save password",
 };
 
 // Activity 1 – Character build (every choice needs a justification)
