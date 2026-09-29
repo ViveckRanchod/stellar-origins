@@ -1,0 +1,199 @@
+{
+	"nodes": [
+		{
+			"id": "idea",
+			"type": "text",
+			"x": 0,
+			"y": 0,
+			"width": 300,
+			"height": 150,
+			"text": "## 1. Idea or feedback\nSomething to change: wording, a question, an image, a colour.",
+			"color": "6"
+		},
+		{
+			"id": "note",
+			"type": "text",
+			"x": 380,
+			"y": 0,
+			"width": 300,
+			"height": 190,
+			"text": "## 2. Write it down\nAdd it to [[Change requests]].\nPage · what it says now · what it should say.\n\n(Claude in **Cowork** can tidy this up for you.)",
+			"color": "6"
+		},
+		{
+			"id": "claude",
+			"type": "text",
+			"x": 760,
+			"y": 0,
+			"width": 300,
+			"height": 170,
+			"text": "## 3. Ask Claude\nClaude Desktop → **Code** → **Cloud** → `stellar-origins`\nPaste the *Make a change* prompt from [[Prompts]].",
+			"color": "5"
+		},
+		{
+			"id": "pr",
+			"type": "text",
+			"x": 760,
+			"y": 260,
+			"width": 300,
+			"height": 170,
+			"text": "## 4. Claude opens a pull request\nYou get a short summary, the PR link and a **preview link**.\nNothing is live yet.",
+			"color": "4"
+		},
+		{
+			"id": "check",
+			"type": "text",
+			"x": 380,
+			"y": 260,
+			"width": 300,
+			"height": 130,
+			"text": "## 5. Check the preview\nOpen the preview link on your phone and computer.",
+			"color": "4"
+		},
+		{
+			"id": "fix",
+			"type": "text",
+			"x": 0,
+			"y": 260,
+			"width": 300,
+			"height": 130,
+			"text": "### Not right?\nTell Claude what to adjust in the same session. It updates the preview.",
+			"color": "1"
+		},
+		{
+			"id": "ship",
+			"type": "text",
+			"x": 380,
+			"y": 480,
+			"width": 300,
+			"height": 120,
+			"text": "## 6. Say \"ship it\"\nClaude merges the pull request as you.",
+			"color": "3"
+		},
+		{
+			"id": "live",
+			"type": "text",
+			"x": 760,
+			"y": 480,
+			"width": 300,
+			"height": 120,
+			"text": "## 7. Live in ~1 minute\nhttps://stellar-origins.vercel.app updates automatically.",
+			"color": "3"
+		},
+		{
+			"id": "log",
+			"type": "text",
+			"x": 1140,
+			"y": 480,
+			"width": 300,
+			"height": 120,
+			"text": "## 8. Log it\nMove the item to *Done* and add a row to [[Change log]].",
+			"color": "2"
+		},
+		{
+			"id": "undo",
+			"type": "text",
+			"x": 1140,
+			"y": 260,
+			"width": 300,
+			"height": 150,
+			"text": "### Something broke after going live?\nUse the *Undo the last change* prompt. Claude reverts it the same way.",
+			"color": "1"
+		},
+		{
+			"id": "data",
+			"type": "text",
+			"x": 1140,
+			"y": 0,
+			"width": 300,
+			"height": 170,
+			"text": "## Anytime: collect data\nSupabase → SQL Editor → paste a query → Run → Export CSV.\nSee [[Collecting data]].",
+			"color": "2"
+		},
+		{
+			"id": "site",
+			"type": "link",
+			"url": "https://stellar-origins.vercel.app",
+			"x": 0,
+			"y": 480,
+			"width": 300,
+			"height": 200
+		}
+	],
+	"edges": [
+		{
+			"id": "e1",
+			"fromNode": "idea",
+			"fromSide": "right",
+			"toNode": "note",
+			"toSide": "left"
+		},
+		{
+			"id": "e2",
+			"fromNode": "note",
+			"fromSide": "right",
+			"toNode": "claude",
+			"toSide": "left"
+		},
+		{
+			"id": "e3",
+			"fromNode": "claude",
+			"fromSide": "bottom",
+			"toNode": "pr",
+			"toSide": "top"
+		},
+		{
+			"id": "e4",
+			"fromNode": "pr",
+			"fromSide": "left",
+			"toNode": "check",
+			"toSide": "right"
+		},
+		{
+			"id": "e5",
+			"fromNode": "check",
+			"fromSide": "left",
+			"toNode": "fix",
+			"toSide": "right",
+			"label": "needs changes"
+		},
+		{
+			"id": "e6",
+			"fromNode": "fix",
+			"fromSide": "top",
+			"toNode": "claude",
+			"toSide": "top",
+			"label": "same session"
+		},
+		{
+			"id": "e7",
+			"fromNode": "check",
+			"fromSide": "bottom",
+			"toNode": "ship",
+			"toSide": "top",
+			"label": "looks good"
+		},
+		{
+			"id": "e8",
+			"fromNode": "ship",
+			"fromSide": "right",
+			"toNode": "live",
+			"toSide": "left"
+		},
+		{
+			"id": "e9",
+			"fromNode": "live",
+			"fromSide": "right",
+			"toNode": "log",
+			"toSide": "left"
+		},
+		{
+			"id": "e10",
+			"fromNode": "live",
+			"fromSide": "top",
+			"toNode": "undo",
+			"toSide": "bottom",
+			"label": "problem?"
+		}
+	]
+}
