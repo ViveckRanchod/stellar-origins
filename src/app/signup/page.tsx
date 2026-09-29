@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { requestReset, setPassword, signIn, signUp } from "@/app/actions";
 import { Notice, Page, Submit } from "@/components/kit";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { account } from "@/content";
+import { supabase } from "@/lib/supabase";
 
 // 2. Account create (and sign-in for returning students via ?mode=login)
 export default async function SignupPage({ searchParams }: PageProps<"/signup">) {
@@ -14,6 +16,9 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
   // Forgotten password: ?mode=forgot asks for the email, ?mode=reset (after the email link) sets a new one.
   if (mode === "forgot" || mode === "reset") {
     const forgot = mode === "forgot";
+    // Setting a new password needs the session from the email link; without it, say so instead of failing on save.
+    if (!forgot && !(await (await supabase()).auth.getUser()).data.user)
+      redirect(`/signup?mode=forgot&error=${encodeURIComponent(account.resetExpired)}`);
     return (
       <Page title={forgot ? account.forgotTitle : account.resetTitle} subtitle={forgot ? account.forgotIntro : undefined}>
         <Notice>{error}</Notice>
