@@ -15,11 +15,12 @@ export const site = {
 // 1. Landing page
 export const landing = {
   welcome: "Welcome to Stellar Origins",
-  quote: "TODO: an inspiring quote goes here.",
-  quoteBy: "TODO: Quote attribution",
+  quote:
+    "We have calcium in our bones, iron in our veins, carbon in our souls, and nitrogen in our brains. 93 percent stardust, with souls made of flames, we are all just stars that have people names.",
+  quoteBy: "Nikita Gill",
   button: "Begin",
   presentedBy: "Presented by",
-  logo: "/logo.png", // LOGO.svg with the white background removed
+  logo: "/logo.png", // LOGO.svg with the white background removed, recoloured a brighter purple (#b36ef5)
   logoAlt: "LUMA, People and Purpose",
 };
 
