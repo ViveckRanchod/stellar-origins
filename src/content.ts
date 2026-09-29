@@ -15,9 +15,13 @@ export const site = {
 // 1. Landing page
 export const landing = {
   welcome: "Welcome to Stellar Origins",
-  quote: "TODO: an inspiring quote goes here.",
-  quoteBy: "TODO: Quote attribution",
+  quote:
+    "We have calcium in our bones, iron in our veins, carbon in our souls, and nitrogen in our brains. 93 percent stardust, with souls made of flames, we are all just stars that have people names.",
+  quoteBy: "Nikita Gill",
   button: "Begin",
+  presentedBy: "Presented by",
+  logo: "/logo.png", // LOGO.svg with the white background removed, recoloured a brighter purple (#b36ef5)
+  logoAlt: "LUMA, People and Purpose",
 };
 
 // 2. Account create
@@ -140,7 +144,7 @@ export const galaxyHeadings = {
   success: "How success gets defined here:",
 };
 
-// Images: placeholder public-domain NASA/ESA Hubble photos until the real ones arrive, see public/galaxies/CREDITS.txt
+// Images: the requester's galaxy1–4 artwork (web-sized copies of public/galaxies/Galaxy1–4.png).
 export const galaxies: Record<GalaxyId, Galaxy> = {
   A: {
     name: "Andromeda Galaxy",
@@ -162,7 +166,7 @@ export const galaxies: Record<GalaxyId, Galaxy> = {
       "not by individual competition, but by how well you collaborate, support colleagues, and contribute to the people and communities around you.",
     closing:
       "If this feels close to how you already think about your ideal career, that’s not a coincidence; it reflects real alignment between what you value and how this kind of organisation actually operates. If parts of it feel off, that’s useful too; it tells you something about what you don’t want, which matters just as much.",
-    image: "/galaxies/whirlpool.jpg",
+    image: "/galaxies/galaxy1.jpg",
   },
   B: {
     name: "Phoenix Cluster",
@@ -184,7 +188,7 @@ export const galaxies: Record<GalaxyId, Galaxy> = {
       "by innovative outcomes, creative problem-solving, and how much you’ve learned, not just by what you’ve delivered.",
     closing:
       "If this feels close to how you already think about your ideal career, that’s real alignment between what you value and how this kind of organisation operates, not a coincidence. If parts of it feel off, that’s worth noting too, it points to what you’d find frustrating rather than energising.",
-    image: "/galaxies/sombrero.jpg",
+    image: "/galaxies/galaxy2.jpg",
   },
   C: {
     name: "Nexus Point",
@@ -207,7 +211,7 @@ export const galaxies: Record<GalaxyId, Galaxy> = {
       "by achieving strategic goals, growth, and measurable impact, success is something you can point to and prove.",
     closing:
       "If this feels close to how you already think about your ideal career, that’s real alignment, not a coincidence. If parts of it feel off, particularly the pace or the emphasis on visible achievement, that’s worth paying attention to as well.",
-    image: "/galaxies/barred-spiral.jpg",
+    image: "/galaxies/galaxy3.jpg",
   },
   D: {
     name: "Triangulum Galaxy",
@@ -230,7 +234,7 @@ export const galaxies: Record<GalaxyId, Galaxy> = {
       "by reliability, consistency, and professional conduct, doing things properly, and being someone others can depend on.",
     closing:
       "If this feels close to how you already think about your ideal career, that’s real alignment, not a coincidence. If parts of it feel off, particularly the pace of change or the emphasis on structure, that’s useful to notice too.",
-    image: "/galaxies/antennae.jpg",
+    image: "/galaxies/galaxy4.jpg",
   },
 };
 
