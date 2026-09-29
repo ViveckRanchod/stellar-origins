@@ -286,7 +286,7 @@ export const questions = [
     "A stable organisation with clear structures and roles.",
   ]),
   q("What type of contribution is most meaningful to you?", [
-    "Strengthening a team and helping others succeed",
+    "Strengthening a team and helping others succeed.",
     "Creating something innovative that changes how things are done.",
     "Producing outcomes that create visible success.",
     "Maintaining quality and consistency that others can depend upon.",
@@ -303,7 +303,7 @@ export const questions = [
     "Achievement, recognition, and success.",
     "Stability, fairness, and clear expectations.",
   ]),
-  q("If you joined a new organisation, what would be drawn to first?", [
+  q("If you joined a new organisation, what would you be drawn to first?", [
     "The quality of relationships.",
     "The openness to new ideas.",
     "The pace and energy.",
