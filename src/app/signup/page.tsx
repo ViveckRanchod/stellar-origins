@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requestReset, setPassword, signIn, signUp } from "@/app/actions";
 import { Notice, Page, Submit } from "@/components/kit";
+import { PasswordInput } from "@/components/PasswordInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { account } from "@/content";
@@ -86,7 +87,11 @@ function Field({ label, name, ...props }: { label: string; name: string } & Reac
       <Label htmlFor={name} className="text-ash">
         {label}
       </Label>
-      <Input id={name} name={name} required className="h-11 sm:h-10" {...props} />
+      {props.type === "password" ? (
+        <PasswordInput id={name} name={name} required className="h-11 sm:h-10" {...props} />
+      ) : (
+        <Input id={name} name={name} required className="h-11 sm:h-10" {...props} />
+      )}
     </div>
   );
 }
