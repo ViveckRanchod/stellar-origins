@@ -70,8 +70,10 @@ export const characterBuild = {
   // 3. Choose your avatar: a spinning 3D menu of the character pictures (no names shown).
   avatar: {
     title: "Choose Your Star",
-    instruction: "Spin through the stars and choose the one you are drawn to.",
-    hint: "Drag to spin, then tap ✓ to choose",
+    instruction: "Spin through the stars, then choose the one you are drawn to.",
+    // Hint over the spinning menu, shown until a character is chosen: touchscreens see the first, mice the second.
+    hintTouch: "Press, hold and swipe to spin. Tap ✓ to choose.",
+    hintMouse: "Click, hold and drag to spin. Click ✓ to choose.",
     chosen: "Your star",
     notChosen: "Spin the stars and tap ✓ to choose one first.",
     justification: { text: "What about this one draws you to it? What does your choice represent or reflect about you?" } as Question,

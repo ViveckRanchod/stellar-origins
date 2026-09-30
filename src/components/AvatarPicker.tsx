@@ -16,7 +16,12 @@ export function AvatarPicker() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-[60svh] max-h-[600px] min-h-[380px] w-full">
-        <InfiniteMenu items={items} scale={1.2} hint={c.hint} chosen={chosen} onChoose={setChosen} />
+        <InfiniteMenu items={items} scale={1.2} hint={
+            <>
+              <span className="pointer-fine:hidden">{c.hintTouch}</span>
+              <span className="hidden pointer-fine:inline">{c.hintMouse}</span>
+            </>
+          } chosen={chosen} onChoose={setChosen} />
       </div>
       <input
         name="avatar"

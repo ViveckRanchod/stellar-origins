@@ -1051,7 +1051,7 @@ class InfiniteGridMenu {
 interface InfiniteMenuProps {
   items: MenuItem[];
   scale?: number;
-  hint?: string; // shown until the first drag
+  hint?: React.ReactNode; // shown until something is chosen
   chosen?: number | null;
   onChoose?: (index: number) => void;
 }
@@ -1061,7 +1061,6 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
   const canvasRef = useRef<HTMLCanvasElement | null>(null) as MutableRefObject<HTMLCanvasElement | null>;
   const [active, setActive] = useState<number | null>(null);
   const [isMoving, setIsMoving] = useState<boolean>(false);
-  const [dragged, setDragged] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1070,13 +1069,9 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
     const handleActiveItem = (index: number) => {
       if (items.length) setActive(index % items.length);
     };
-    const handleMoving = (moving: boolean) => {
-      setIsMoving(moving);
-      if (moving) setDragged(true);
-    };
 
     if (canvas) {
-      sketch = new InfiniteGridMenu(canvas, items, handleActiveItem, handleMoving, sk => sk.run(), scale);
+      sketch = new InfiniteGridMenu(canvas, items, handleActiveItem, setIsMoving, sk => sk.run(), scale);
     }
 
     const handleResize = () => {
@@ -1105,7 +1100,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
       {hint && (
         <p
           className={`pointer-events-none absolute left-1/2 top-3 w-max -translate-x-1/2 rounded-full bg-black/70 px-3 py-1.5 text-center font-mono text-xs uppercase tracking-wider text-lilac transition-opacity duration-500 ${
-            dragged ? 'opacity-0' : 'animate-pulse opacity-100'
+            chosen != null ? 'opacity-0' : 'animate-pulse opacity-100'
           }`}
         >
           {hint}
