@@ -385,7 +385,8 @@ export const questions = [
 // 8. Results
 export const results = {
   title: "Your galaxies",
-  intro: "TODO: Intro text for results.",
+  intro:
+    "Your responses have created a unique galaxy map, showing your percentage alignment with each of the four workplace cultures.\nExplore your results and notice which environments resonate with you most. There’s no right or wrong combination. Your map is a starting point for exploring what makes work meaningful to you.",
   deckHint: "Swipe or tap the card to see your next galaxy",
   profilesTitle: "Your galaxy profiles",
   rank: (n: number) => `#${n} match`,
@@ -463,7 +464,7 @@ export const disruption = {
   // ponytail: shared list; for per-disruption questions, move this into each disruption above.
   questions: {
     title: "Individual Reflection",
-    intro: "TODO: Intro text.",
+    intro: "Take a moment to step into your scenario. Reflect honestly on what the disruption might mean for you and what matters most.",
     items: [
       {
         title: "What matters?",
@@ -484,7 +485,8 @@ export const disruption = {
   // 12. Move and regroup (with others who have the same disruption). Submit sends the results email.
   chat: {
     title: "Move and Regroup",
-    instruction: "Find other stars who have been assigned the same scenario and discuss it with them.",
+    instruction:
+      "Now, find the others who received the same scenario and come together as a group. Compare your perspectives, explore different ways of responding, and consider what your differences reveal about meaning at work.",
     items: [
       {
         title: "Different perspectives",
