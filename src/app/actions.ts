@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { account, final } from "@/content";
+import { resultsEmail } from "@/lib/resultsEmail";
 import { browseAll, galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
 
 function back(mode: string, msg: string): never {
@@ -111,9 +112,8 @@ async function emailResults() {
   if (!key) return console.warn("RESEND_API_KEY not set, skipping results email");
 
   const { user } = await requireUser();
-  const scores = await galaxyScores();
-  const text = [final.email.intro, "", ...scores.map((g) => `${g.name}: ${g.percent}%`)].join("\n");
-  // TODO: add disruption + other answers to the email body if wanted.
+  const origin = (await headers()).get("origin") ?? "https://stellar-origins.vercel.app";
+  const { html, text } = resultsEmail(await galaxyScores(), origin);
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -122,6 +122,7 @@ async function emailResults() {
       from: process.env.EMAIL_FROM ?? "Stellar Origins <onboarding@resend.dev>",
       to: [user.email],
       subject: final.email.subject,
+      html,
       text,
     }),
   });
