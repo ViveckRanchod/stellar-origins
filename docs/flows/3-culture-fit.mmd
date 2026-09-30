@@ -1,0 +1,8 @@
+flowchart LR
+  I[Intermission<br/>next: a 20-question quiz<br/>to see where you fit] --> Q[20 quiz pages<br/>one per question]
+  Q --> R[Results<br/>% for each galaxy,<br/>profiles highest first]
+  R --> GA[Galaxy A]
+  R --> GB[Galaxy B]
+  R --> GC[Galaxy C]
+  R --> GD[Galaxy D]
+  Q -. each answer scores<br/>one galaxy .-> R
