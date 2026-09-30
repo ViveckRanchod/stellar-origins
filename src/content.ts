@@ -510,6 +510,8 @@ export const final = {
   restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins results",
-    intro: "TODO: Email intro text.",
+    heading: "Your galaxies",
+    intro: "Here's how your answers lined up with the four galaxies. Your closest match is first.",
+    button: "See your full results",
   },
 };
