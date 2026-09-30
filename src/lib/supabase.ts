@@ -72,9 +72,38 @@ export async function galaxyScores() {
     .sort((a, b) => b.percent - a.percent);
 }
 
+// Remembers the student's character in a cookie as "N.X" (character N, accessory X, 0 = none), matching the
+// picture characterN/N.X.png. Read by the customise page and the corner badge, so no database round trip.
+// avatar = "avatar_N", accessory = "accessory_X" | "none"; null keeps the current value.
+export async function rememberCharacter(avatar: unknown, accessory: unknown = "none") {
+  const store = await cookies();
+  const n = (v: unknown) => Number(String(v).split("_")[1]) || 0;
+  const character = avatar ? n(avatar) : Number(store.get("character")?.value.split(".")[0]);
+  if (character) store.set("character", `${character}.${n(accessory)}`, { maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+}
+
 export async function resumePath() {
   const { db } = await requireUser();
-  const { data } = await db.from("responses").select("step");
+  const { data } = await db.from("responses").select("step, answer");
   const done = new Set(data?.map((r) => r.step));
+  // Restores the corner badge on a new device.
+  const answer = (step: string) => data?.find((r) => r.step === step)?.answer;
+  if (answer("avatar")) await rememberCharacter(answer("avatar").avatar, answer("customize")?.accessory);
   return flow.find((f) => !done.has(f.step))?.path ?? "/done";
+}
+
+// Everything the feedback report PDF needs for the signed-in student.
+export async function reportData() {
+  const { db, user } = await requireUser();
+  const [{ data }, scores] = await Promise.all([db.from("responses").select("step, answer"), galaxyScores()]);
+  const m = user.user_metadata;
+  return {
+    user,
+    report: {
+      name: `${m.first_name ?? ""} ${m.last_name ?? ""}`.trim(),
+      date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
+      scores,
+      answers: Object.fromEntries(data?.map((r) => [r.step, r.answer]) ?? []),
+    },
+  };
 }
