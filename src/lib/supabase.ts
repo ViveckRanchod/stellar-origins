@@ -24,20 +24,27 @@ export async function supabase() {
 // process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development" (here and in proxy.ts).
 export const browseAll = true;
 
+// Checks the login cookie against Supabase's public signing key, on our server: no round trip to Supabase.
+// ponytail: a deleted or banned user stays signed in until their token expires (up to 1 hour).
+async function currentUser(db: Awaited<ReturnType<typeof supabase>>) {
+  const { data } = await db.auth.getClaims();
+  return data ? { id: data.claims.sub, email: data.claims.email } : null;
+}
+
 // For pages: signed-in client + user, or bounce to login. With browseAll, user may be null.
 export async function pageUser() {
   const db = await supabase();
-  const { data } = await db.auth.getUser();
-  if (!data.user && !browseAll) redirect("/signup?mode=login");
-  return { db, user: data.user };
+  const user = await currentUser(db);
+  if (!user && !browseAll) redirect("/signup?mode=login");
+  return { db, user };
 }
 
 // For saving: always needs a real signed-in user.
 export async function requireUser() {
   const db = await supabase();
-  const { data } = await db.auth.getUser();
-  if (!data.user) redirect("/signup?mode=login");
-  return { db, user: data.user };
+  const user = await currentUser(db);
+  if (!user) redirect("/signup?mode=login");
+  return { db, user };
 }
 
 // Ordered steps: a returning student resumes at the page of their first unanswered step.

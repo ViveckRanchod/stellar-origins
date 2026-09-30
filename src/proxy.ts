@@ -16,12 +16,12 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  const { data } = await db.auth.getUser();
+  const { data } = await db.auth.getClaims(); // checked locally, also refreshes an expired session
   const path = request.nextUrl.pathname;
   const isPublic = path === "/" || path === "/signup";
   // Same rule as browseAll in lib/supabase.ts (currently open everywhere, restore before launch).
   const browseAll = true;
-  if (!data.user && !isPublic && !browseAll) return NextResponse.redirect(new URL("/signup?mode=login", request.url));
+  if (!data && !isPublic && !browseAll) return NextResponse.redirect(new URL("/signup?mode=login", request.url));
   return response;
 }
 

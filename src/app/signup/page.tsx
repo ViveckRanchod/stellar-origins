@@ -18,7 +18,7 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
   if (mode === "forgot" || mode === "reset") {
     const forgot = mode === "forgot";
     // Setting a new password needs the session from the email link; without it, say so instead of failing on save.
-    if (!forgot && !(await (await supabase()).auth.getUser()).data.user)
+    if (!forgot && !(await (await supabase()).auth.getClaims()).data)
       redirect(`/signup?mode=forgot&error=${encodeURIComponent(account.resetExpired)}`);
     return (
       <Page title={forgot ? account.forgotTitle : account.resetTitle} subtitle={forgot ? account.forgotIntro : undefined}>
