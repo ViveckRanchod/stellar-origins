@@ -27,11 +27,12 @@ export const landing = {
 // 2. Account create
 export const account = {
   title: "Create your account",
-  intro: "TODO: Short intro text for sign-up.",
+  intro:
+    "Set up your Stellar Origins account to save your progress and access your journey throughout the workshop.\nEnter your details below to get started.",
   fields: {
     email: { label: "Email", placeholder: "you@school.edu" },
-    firstName: { label: "Name", placeholder: "TODO" },
-    lastName: { label: "Surname", placeholder: "TODO" },
+    firstName: { label: "Name", placeholder: "" },
+    lastName: { label: "Surname", placeholder: "" },
     password: { label: "Password", placeholder: "At least 6 characters" },
   },
   // Paragraphs; wrap words in **double stars** for bold.
@@ -70,7 +71,7 @@ export const accessoryImage = (x: number) => `/characters/accessories/${x}.png`;
 // Activity 1 – Character build (every choice needs a justification).
 // Wrap words in **double stars** to show them in bold (titles, instructions and question labels).
 export const characterBuild = {
-  activityName: "Choose Your Star",
+  activityName: "Forge Your Star",
 
   // 3. Choose your avatar: a spinning 3D menu of the character pictures (no names shown).
   avatar: {
@@ -82,7 +83,7 @@ export const characterBuild = {
     chosen: "Your star",
     notChosen: "Spin the stars and tap ✓ to choose one first.",
     justification: { text: "What about this one draws you to it? What does your choice represent or reflect about you?" } as Question,
-    justificationPlaceholder: "TODO",
+    justificationPlaceholder: "",
     button: "Next",
   },
 
@@ -97,7 +98,7 @@ export const characterBuild = {
       text: "Consider: **What does this accessory represent, and why is it meaningful to you?**",
     } as Question,
     justificationHint: "If you chose no accessory, briefly explain why.",
-    justificationPlaceholder: "TODO",
+    justificationPlaceholder: "",
     button: "Next",
   },
 
@@ -106,7 +107,7 @@ export const characterBuild = {
     title: "Looking Ahead",
     hint: "This question is optional.",
     question: "Complete the sentence: **In the future, I’m heading toward…**",
-    placeholder: "TODO",
+    placeholder: "",
     why: "Then consider: **Why is this meaningful to me?**",
     needs: "What is one thing that would need to be true for me to move toward it?",
     button: "Next",

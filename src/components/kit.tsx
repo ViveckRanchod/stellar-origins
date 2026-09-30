@@ -66,7 +66,7 @@ export function Page({
         {badge && <span className="badge">{badge}</span>}
         <Title text={title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
         {subtitle && (
-          <p className="text-lg text-ash">
+          <p className="text-lg whitespace-pre-line text-ash">
             <Rich text={subtitle} />
           </p>
         )}
