@@ -1,5 +1,6 @@
 "use server";
 
+import { createClient } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { account, final } from "@/content";
@@ -42,10 +43,12 @@ export async function signIn(form: FormData) {
 export async function requestReset(form: FormData) {
   const email = String(form.get("email") ?? "").trim();
   const origin = (await headers()).get("origin");
-  const db = await supabase();
-  // ponytail: PKCE link only works in the browser that asked for it. Other-device links need a custom
-  // Supabase email template using {{ .TokenHash }} + verifyOtp.
-  const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/auth/reset` });
+  // Implicit flow (not the PKCE default of @supabase/ssr) so the email link works on any device or browser.
+  // RecoveryLink (layout.tsx) picks up the session from the link.
+  const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+    auth: { flowType: "implicit", persistSession: false },
+  });
+  const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/` });
   if (error) back("forgot", error.message);
   back("login", account.forgotSent); // same message whether or not the email exists
 }

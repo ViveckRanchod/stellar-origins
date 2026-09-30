@@ -3,6 +3,7 @@ import { Barlow_Condensed, Hanken_Grotesk, JetBrains_Mono } from "next/font/goog
 import ClickSpark from "@/components/ClickSpark";
 import { DevNav } from "@/components/DevNav";
 import Galaxy from "@/components/Galaxy";
+import { RecoveryLink } from "@/components/RecoveryLink";
 import { site } from "@/content";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             twinkleIntensity={0.2}
           />
         </div>
+        <RecoveryLink />
         <DevNav />
         {children}
         <ClickSpark sparkColor="#f4f0ff" sparkSize={10} sparkRadius={18} sparkCount={8} duration={400} />
