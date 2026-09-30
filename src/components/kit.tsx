@@ -159,35 +159,6 @@ export function Picture({ src, label, className }: { src: string; label: string;
   );
 }
 
-// Selectable cards backed by native radio/checkbox inputs.
-export function ChoiceGrid({
-  name,
-  type,
-  options,
-  required,
-}: {
-  name: string;
-  type: "radio" | "checkbox";
-  options: { id: string; name: string; description: string; image: string }[];
-  required?: boolean;
-}) {
-  return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-      {options.map((o) => (
-        <label
-          key={o.id}
-          className="panel flex cursor-pointer flex-col items-center gap-3 p-4 text-center transition-colors hover:bg-indigo has-checked:bg-indigo has-checked:ring-1 has-checked:ring-lavender has-focus-visible:ring-2 has-focus-visible:ring-lavender"
-        >
-          <input type={type} name={name} value={o.id} required={required} className="sr-only" />
-          <Picture src={o.image} label={o.name} className="max-w-24" />
-          <span className="text-[15px] font-medium text-lilac">{o.name}</span>
-          <span className="text-sm text-fog">{o.description}</span>
-        </label>
-      ))}
-    </div>
-  );
-}
-
 // A question's optional bold title above its text.
 function QuestionLabel({ q }: { q: Question }) {
   if (!q.title) return <span><Rich text={q.text} /></span>;
