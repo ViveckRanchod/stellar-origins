@@ -55,10 +55,10 @@ export const account = {
 
 // Character art lives in public/characters (upload new files there, same names):
 //   characterN/N.0.png  character N on its own        (N = 1 to 5)
-//   characterN/N.X.png  character N wearing accessory X (X = 1 to 6)
+//   characterN/N.X.png  character N wearing accessory X (X = 1 to 4)
 //   accessories/X.png   the accessory's tile in the grid
 // Missing pictures are simply left out of the page until they're uploaded.
-export const characters = { count: 5, accessories: 6 };
+export const characters = { count: 5, accessories: 4 };
 export const characterImage = (n: number, accessory = 0) => `/characters/character${n}/${n}.${accessory}.png`;
 export const accessoryImage = (x: number) => `/characters/accessories/${x}.png`;
 
