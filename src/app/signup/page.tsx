@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requestReset, setPassword, signIn, signUp } from "@/app/actions";
-import { Notice, Page, Submit } from "@/components/kit";
+import { Notice, Page, Rich, Submit } from "@/components/kit";
 import { PasswordInput } from "@/components/PasswordInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,7 +61,13 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
         {!login && (
           <>
             <div className="aurora" />
-            <p className="text-sm text-fog">{account.privacyNotice}</p>
+            <div className="flex flex-col gap-3 text-sm text-fog">
+              {account.privacyNotice.map((para) => (
+                <p key={para}>
+                  <Rich text={para} />
+                </p>
+              ))}
+            </div>
             <label className="flex items-start gap-3 text-sm text-ash">
               <input type="checkbox" name="privacy" required className="mt-0.5 accent-lavender" />
               {account.privacyConsent}
