@@ -1054,20 +1054,27 @@ interface InfiniteMenuProps {
   hint?: React.ReactNode; // always shown over the menu
   chosen?: number | null;
   onChoose?: (index: number) => void;
+  onActive?: (index: number) => void; // the item currently in the centre
 }
 
 // React Bits InfiniteMenu, trimmed for Stellar: pictures only, the round button chooses the front item.
-const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen, onChoose }) => {
+const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen, onChoose, onActive }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null) as MutableRefObject<HTMLCanvasElement | null>;
   const [active, setActive] = useState<number | null>(null);
   const [isMoving, setIsMoving] = useState<boolean>(false);
+  const onActiveRef = useRef(onActive);
+  useEffect(() => {
+    onActiveRef.current = onActive;
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     let sketch: InfiniteGridMenu | null = null;
 
     const handleActiveItem = (index: number) => {
-      if (items.length) setActive(index % items.length);
+      if (!items.length) return;
+      setActive(index % items.length);
+      onActiveRef.current?.(index % items.length);
     };
 
     if (canvas) {
