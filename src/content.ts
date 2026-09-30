@@ -505,7 +505,7 @@ export const disruption = {
 // 14. Final screen + results email
 export const final = {
   title: "Thanks for participating!",
-  message: "Check your inbox for your results. If it isn’t there in a few minutes, check your spam or junk folder too."
+  message: "Check your inbox for your results. If it isn’t there in a few minutes, check your spam or junk folder too.",
   closing: "TODO: Optional closing line.",
   restart: "Start again (testing only)",
   email: {
