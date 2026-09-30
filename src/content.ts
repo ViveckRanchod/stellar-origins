@@ -53,48 +53,45 @@ export const account = {
   resetExpired: "That reset link has expired or was already used. Please ask for a new one.",
 };
 
+// Character art lives in public/characters (upload new files there, same names):
+//   characterN/N.0.png  character N on its own        (N = 1 to 5)
+//   characterN/N.X.png  character N wearing accessory X (X = 1 to 6)
+//   accessories/X.png   the accessory's tile in the grid
+// Missing pictures are simply left out of the page until they're uploaded.
+export const characters = { count: 5, accessories: 6 };
+export const characterImage = (n: number, accessory = 0) => `/characters/character${n}/${n}.${accessory}.png`;
+export const accessoryImage = (x: number) => `/characters/accessories/${x}.png`;
+
 // Activity 1 – Character build (every choice needs a justification).
 // Wrap words in **double stars** to show them in bold (titles, instructions and question labels).
 export const characterBuild = {
   activityName: "Choose Your Star",
 
-  // 3. Choose your avatar (exactly 5)
+  // 3. Choose your avatar: a spinning 3D menu of the character pictures (no names shown).
   avatar: {
     title: "Choose Your Star",
-    instruction: "Choose an avatar from the 5 below that you are drawn to.",
-    options: [
-      { id: "avatar_1", name: "TODO Avatar 1", description: "TODO", image: "" },
-      { id: "avatar_2", name: "TODO Avatar 2", description: "TODO", image: "" },
-      { id: "avatar_3", name: "TODO Avatar 3", description: "TODO", image: "" },
-      { id: "avatar_4", name: "TODO Avatar 4", description: "TODO", image: "" },
-      { id: "avatar_5", name: "TODO Avatar 5", description: "TODO", image: "" },
-    ],
+    instruction: "Spin through the stars, then choose the one you are drawn to.",
+    // Hint over the spinning menu, shown until a character is chosen: touchscreens see the first, mice the second.
+    hintTouch: "Press, hold and swipe to spin. Tap ✓ to choose.",
+    hintMouse: "Click, hold and drag to spin. Click ✓ to choose.",
+    chosen: "Your star",
+    notChosen: "Spin the stars and tap ✓ to choose one first.",
     justification: { text: "What about this one draws you to it? What does your choice represent or reflect about you?" } as Question,
     justificationPlaceholder: "TODO",
     button: "Next",
   },
 
-  // 4. Customise character (8 options, pick 0–2)
+  // 4. Customise character: add one accessory, or none.
   customize: {
     title: "Make It Yours",
-    instruction: "Customise your character by choosing **up to two** elements that you would add to it.",
-    max: 2,
-    skip: "Skip, I don’t want to customise my character",
-    options: [
-      { id: "opt_1", name: "TODO Option 1", description: "TODO", image: "" },
-      { id: "opt_2", name: "TODO Option 2", description: "TODO", image: "" },
-      { id: "opt_3", name: "TODO Option 3", description: "TODO", image: "" },
-      { id: "opt_4", name: "TODO Option 4", description: "TODO", image: "" },
-      { id: "opt_5", name: "TODO Option 5", description: "TODO", image: "" },
-      { id: "opt_6", name: "TODO Option 6", description: "TODO", image: "" },
-      { id: "opt_7", name: "TODO Option 7", description: "TODO", image: "" },
-      { id: "opt_8", name: "TODO Option 8", description: "TODO", image: "" },
-    ],
+    instruction: "Customise your character by choosing **one** accessory to add to it, or none.",
+    panel: "Accessories",
+    none: "No accessory",
     justification: {
-      title: "What do your choices represent for you?",
-      text: "For each element, consider: **What does this represent, and why is it meaningful to you?**",
+      title: "What does your choice represent for you?",
+      text: "Consider: **What does this accessory represent, and why is it meaningful to you?**",
     } as Question,
-    justificationHint: "If you choose not to customise your character, select “Skip” and briefly explain why.",
+    justificationHint: "If you chose no accessory, briefly explain why.",
     justificationPlaceholder: "TODO",
     button: "Next",
   },
@@ -510,8 +507,22 @@ export const final = {
   restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins results",
-    heading: "Your galaxies",
-    intro: "Here's how your answers lined up with the four galaxies. Your closest match is first.",
+    heading: "Thanks for taking part!",
+    intro: "Thanks for taking part in Stellar Origins! Your feedback report, worksheet and perspective cue cards are attached.",
     button: "See your full results",
   },
+  // Document 1, made for each student (PDF attached to the email).
+  report: {
+    fileName: "Stellar Origins feedback report.pdf",
+    title: "Your feedback report",
+    characterTitle: "Your star",
+    galaxiesTitle: "Your galaxies",
+    answersTitle: "Your reflections",
+  },
+  // Documents 2 and 3: the same blank PDFs for everyone. Upload them to public/documents/ with these file names;
+  // until a file is there, the email is sent without it.
+  documents: [
+    { file: "worksheet.pdf", name: "Stellar Origins worksheet.pdf" },
+    { file: "perspective-cue-cards.pdf", name: "Stellar Origins perspective cue cards.pdf" },
+  ],
 };

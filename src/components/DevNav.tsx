@@ -10,8 +10,8 @@ const items: CardNavItem[] = [
     links: [
       { label: "Landing", href: "/", note: "Title, LinkButton" },
       { label: "Sign up / log in", href: "/signup", note: "Page, Notice, Submit, ui/Input" },
-      { label: "Choose avatar", href: "/character/avatar", note: "Page, ChoiceGrid, TextField" },
-      { label: "Customise", href: "/character/customize", note: "Page, ChoiceGrid, TextField" },
+      { label: "Choose avatar", href: "/character/avatar", note: "Page, AvatarPicker (InfiniteMenu), TextField" },
+      { label: "Customise", href: "/character/customize", note: "Page, Wardrobe, TextField" },
       { label: "Future self", href: "/character/future", note: "Page, TextField, Submit" },
     ],
   },

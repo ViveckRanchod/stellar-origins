@@ -1,11 +1,15 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { account, final } from "@/content";
+import { feedbackReport } from "@/lib/feedbackReport";
 import { resultsEmail } from "@/lib/resultsEmail";
-import { browseAll, galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
+import { browseAll, rememberCharacter, reportData, requireUser, resumePath, supabase } from "@/lib/supabase";
 
 function back(mode: string, msg: string): never {
   redirect(`/signup?mode=${mode}&error=${encodeURIComponent(msg)}`);
@@ -88,32 +92,31 @@ async function save(step: string, form: FormData) {
 
 export async function saveStep(step: string, next: string, form: FormData) {
   await save(step, form);
+  if (step === "avatar") await rememberCharacter(form.get("avatar"));
+  if (step === "customize") await rememberCharacter(null, form.get("accessory"));
   redirect(next);
-}
-
-export async function saveCustomize(max: number, form: FormData) {
-  const picked = form.getAll("options");
-  if (picked.includes("skip") && picked.length > 1) redirect(`/character/customize?error=${encodeURIComponent("Choose Skip or some elements, not both.")}`);
-  if (picked.length > max) redirect(`/character/customize?error=${encodeURIComponent(`Pick at most ${max}.`)}`);
-  await save("customize", form);
-  redirect("/character/future");
 }
 
 export async function submitFinal(form: FormData) {
   await save("group", form);
-  await emailResults();
+  after(emailResults); // runs after the student has moved on to /done, so PDF-making never keeps them waiting
   redirect("/done");
 }
 
-// Sends the results email via Resend (https://resend.com, free tier) if RESEND_API_KEY is set.
-// Failures are logged, never block the student.
+// Sends the results email via Resend (https://resend.com, free tier) if RESEND_API_KEY is set, with the
+// feedback report PDF and the blank documents attached. Failures are logged, never block the student.
 async function emailResults() {
   const key = process.env.RESEND_API_KEY;
   if (!key) return console.warn("RESEND_API_KEY not set, skipping results email");
 
-  const { user } = await requireUser();
   const origin = (await headers()).get("origin") ?? "https://stellar-origins.vercel.app";
-  const { html, text } = resultsEmail(await galaxyScores(), origin);
+  const { html, text } = resultsEmail(origin);
+  const { user, report } = await reportData();
+  const attachments = [{ filename: final.report.fileName, content: (await feedbackReport(report)).toString("base64") }];
+  for (const d of final.documents) {
+    const pdf = await readFile(path.join(process.cwd(), "public/documents", d.file)).catch(() => null);
+    if (pdf) attachments.push({ filename: d.name, content: pdf.toString("base64") });
+  }
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -124,6 +127,7 @@ async function emailResults() {
       subject: final.email.subject,
       html,
       text,
+      attachments,
     }),
   });
   if (!res.ok) console.error("Results email failed", res.status, await res.text());
