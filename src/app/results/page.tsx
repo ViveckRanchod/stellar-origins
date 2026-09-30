@@ -34,7 +34,7 @@ export default async function ResultsPage() {
       <BackLink />
       <header className="flex flex-col items-center gap-2 text-center">
         <Title text={results.title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
-        <p className="text-ash">{results.intro}</p>
+        <p className="whitespace-pre-line text-ash">{results.intro}</p>
         <p className="font-mono text-[11px] tracking-[0.14em] text-fog uppercase">{results.deckHint}</p>
       </header>
 
