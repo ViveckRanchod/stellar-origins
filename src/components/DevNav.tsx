@@ -32,7 +32,7 @@ const items: CardNavItem[] = [
     textColor: "#f4f0ff",
     links: [
       { label: "Intermission", href: "/intermission/disruption", note: "Intermission" },
-      { label: "Assigned disruption", href: "/disruption", note: "Page, Picture (uses a slot if signed in)" },
+      { label: "Assigned disruption", href: "/disruption", note: "Page (uses a slot if signed in)" },
       { label: "Questions", href: "/disruption/questions", note: "Page, Questions, Submit" },
       { label: "Move and regroup", href: "/disruption/chat", note: "Page, Questions, Submit" },
       { label: "Done", href: "/done", note: "Title" },

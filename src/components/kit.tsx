@@ -143,22 +143,6 @@ export function Rich({ text }: { text: string }) {
   return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-semibold text-lilac">{part}</strong> : part));
 }
 
-// Image, or a placeholder circle until real art is added in content.ts.
-export function Picture({ src, label, className }: { src: string; label: string; className?: string }) {
-  if (src) {
-    // eslint-disable-next-line @next/next/no-img-element -- works with any Supabase bucket URL without next.config setup
-    return <img src={src} alt={label} className={cn("aspect-square w-full rounded-full object-cover", className)} />;
-  }
-  return (
-    <div
-      aria-hidden
-      className={cn("grid aspect-square w-full place-items-center rounded-full border border-fog/30 bg-indigo text-fog", className)}
-    >
-      <span className="text-xs">image</span>
-    </div>
-  );
-}
-
 // A question's optional bold title above its text.
 function QuestionLabel({ q }: { q: Question }) {
   if (!q.title) return <span><Rich text={q.text} /></span>;
