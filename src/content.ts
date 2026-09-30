@@ -110,13 +110,11 @@ export const characterBuild = {
 
 // 6. Intermission 1
 export const intermission1 = {
-  title: "TODO: Intermission title",
+  title: "Next: Chart Your Galaxy",
   lines: [
-    "TODO: The next activity shows where you would fit.",
-    "TODO: What you're about to do next.",
-    "TODO: It's a 20-question quiz.",
+    "You’ve forged your star. Now you’ll answer a short set of questions about what you value at work, and be placed into one of four galaxies based on your answers.",
   ],
-  button: "Start the quiz",
+  button: "Let’s Start",
 };
 
 // Activity 2 – Culture fit. Galaxy ids (A–D) are stored with every quiz answer.
@@ -390,9 +388,13 @@ export const results = {
 
 // 9. Intermission 2
 export const intermission2 = {
-  title: "TODO: Intermission title",
-  lines: ["TODO: You are going to be assigned a disruption!"],
-  button: "Hit next",
+  title: "When Work Goes Off Course",
+  lines: [
+    "Work does not always unfold as planned. Changes in structures, priorities, people and resources can disrupt the parts of work that give us a sense of meaning.",
+    "You have been given one of four workplace disruptions. Read your scenario and imagine that you are the person experiencing it.",
+    "There is no single “right” response. Consider what the situation means to you, what matters most to you, and what you could realistically influence.",
+  ],
+  button: "Let’s Start",
 };
 
 // 10. Disruptions. Ids d1–d4 must match supabase/schema.sql. Each student is handed one, in turn (d1, d2, d3, d4, d1, …).
