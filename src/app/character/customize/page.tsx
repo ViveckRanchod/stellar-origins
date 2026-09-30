@@ -1,20 +1,18 @@
-import { saveCustomize } from "@/app/actions";
-import { ChoiceGrid, Notice, Page, Submit, TextField } from "@/components/kit";
+import { cookies } from "next/headers";
+import { saveStep } from "@/app/actions";
+import { Page, Submit, TextField } from "@/components/kit";
+import { Wardrobe } from "@/components/Wardrobe";
 import { characterBuild } from "@/content";
 
-// 4. Customise character: pick 0–2 of 8 options (or Skip) + required justification
-export default async function CustomizePage({ searchParams }: PageProps<"/character/customize">) {
-  const { error } = await searchParams;
+// 4. Customise character: one accessory (or none) + required justification
+export default async function CustomizePage() {
   const c = characterBuild.customize;
+  // Chosen on the previous step (see saveStep). ponytail: falls back to character 1 when browsing without one.
+  const character = Number((await cookies()).get("character")?.value.split(".")[0]) || 1;
   return (
-    <Page badge={characterBuild.activityName} title={c.title} subtitle={c.instruction} wide>
-      <Notice>{error}</Notice>
-      <form action={saveCustomize.bind(null, c.max)} className="flex flex-col gap-8">
-        <ChoiceGrid name="options" type="checkbox" options={c.options} />
-        <label className="panel flex w-fit cursor-pointer items-center gap-3 self-center px-5 py-3 text-ash has-checked:bg-indigo has-checked:text-lilac has-checked:ring-1 has-checked:ring-lavender">
-          <input type="checkbox" name="options" value="skip" className="accent-lavender" />
-          {c.skip}
-        </label>
+    <Page badge={characterBuild.activityName} title={c.title} subtitle={c.instruction} wide hideCharacter>
+      <form action={saveStep.bind(null, "customize", "/character/future")} className="flex flex-col gap-8">
+        <Wardrobe character={character} />
         <TextField
           name="justification"
           label={c.justification}

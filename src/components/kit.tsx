@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { ArrowRight } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import SplitText from "@/components/SplitText";
@@ -6,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import type { Question } from "@/content";
+import { characterImage, type Question } from "@/content";
 
 // Pill CTA. Mobile first: full-width 48px on phones, content-width from sm.
 // White pill with a soft white glow; glows brighter on hover, presses in on tap, arrow nudges forward.
@@ -46,17 +48,20 @@ export function Page({
   title,
   subtitle,
   wide,
+  hideCharacter,
   children,
 }: {
   badge?: string;
   title: string;
   subtitle?: string;
   wide?: boolean;
+  hideCharacter?: boolean;
   children?: React.ReactNode;
 }) {
   return (
     <main className={cn("mx-auto flex flex-col gap-6 px-4 py-4 sm:gap-8 sm:px-6 sm:py-12", wide ? "max-w-4xl" : "max-w-xl")}>
       <BackLink />
+      {!hideCharacter && <MyCharacter />}
       <header className="flex flex-col items-center gap-4 text-center">
         {badge && <span className="badge">{badge}</span>}
         <Title text={title} className="text-[32px] leading-tight tracking-[-0.2px] sm:text-5xl" />
@@ -68,6 +73,17 @@ export function Page({
       </header>
       {children}
     </main>
+  );
+}
+
+// The student's character (with accessory) in the top corner, once chosen. Cookie set by rememberCharacter.
+async function MyCharacter() {
+  const [n, x] = ((await cookies()).get("character")?.value ?? "").split(".").map(Number);
+  if (!n) return null;
+  return (
+    <div className="panel fixed top-3 right-3 z-20 size-14 overflow-hidden rounded-full sm:top-5 sm:right-5 sm:size-16">
+      <Image src={characterImage(n, x || 0)} alt="Your character" fill sizes="64px" className="object-contain" />
+    </div>
   );
 }
 

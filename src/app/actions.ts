@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { account, final } from "@/content";
 import { resultsEmail } from "@/lib/resultsEmail";
-import { browseAll, galaxyScores, requireUser, resumePath, supabase } from "@/lib/supabase";
+import { browseAll, galaxyScores, rememberCharacter, requireUser, resumePath, supabase } from "@/lib/supabase";
 
 function back(mode: string, msg: string): never {
   redirect(`/signup?mode=${mode}&error=${encodeURIComponent(msg)}`);
@@ -88,15 +88,9 @@ async function save(step: string, form: FormData) {
 
 export async function saveStep(step: string, next: string, form: FormData) {
   await save(step, form);
+  if (step === "avatar") await rememberCharacter(form.get("avatar"));
+  if (step === "customize") await rememberCharacter(null, form.get("accessory"));
   redirect(next);
-}
-
-export async function saveCustomize(max: number, form: FormData) {
-  const picked = form.getAll("options");
-  if (picked.includes("skip") && picked.length > 1) redirect(`/character/customize?error=${encodeURIComponent("Choose Skip or some elements, not both.")}`);
-  if (picked.length > max) redirect(`/character/customize?error=${encodeURIComponent(`Pick at most ${max}.`)}`);
-  await save("customize", form);
-  redirect("/character/future");
 }
 
 export async function submitFinal(form: FormData) {
