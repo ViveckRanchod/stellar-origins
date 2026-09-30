@@ -21,7 +21,9 @@ export function AvatarPicker() {
               <span className="pointer-fine:hidden">{c.hintTouch}</span>
               <span className="hidden pointer-fine:inline">{c.hintMouse}</span>
             </>
-          } chosen={chosen} onChoose={setChosen} />
+          } chosen={chosen} onChoose={setChosen}
+          // Spinning to another star un-chooses the old one, so the star saved is always the one shown with ✓.
+          onActive={(i) => setChosen((c) => (c === i ? c : null))} />
       </div>
       <input
         name="avatar"
