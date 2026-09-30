@@ -28,7 +28,7 @@ export const browseAll = true;
 // ponytail: a deleted or banned user stays signed in until their token expires (up to 1 hour).
 async function currentUser(db: Awaited<ReturnType<typeof supabase>>) {
   const { data } = await db.auth.getClaims();
-  return data ? { id: data.claims.sub, email: data.claims.email } : null;
+  return data ? { id: data.claims.sub, email: data.claims.email, user_metadata: data.claims.user_metadata ?? {} } : null;
 }
 
 // For pages: signed-in client + user, or bounce to login. With browseAll, user may be null.
