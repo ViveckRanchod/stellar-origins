@@ -507,8 +507,22 @@ export const final = {
   restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins results",
-    heading: "Your galaxies",
-    intro: "Here's how your answers lined up with the four galaxies. Your closest match is first.",
+    heading: "Thanks for taking part!",
+    intro: "Thanks for taking part in Stellar Origins! Your feedback report, worksheet and perspective cue cards are attached.",
     button: "See your full results",
   },
+  // Document 1, made for each student (PDF attached to the email).
+  report: {
+    fileName: "Stellar Origins feedback report.pdf",
+    title: "Your feedback report",
+    characterTitle: "Your star",
+    galaxiesTitle: "Your galaxies",
+    answersTitle: "Your reflections",
+  },
+  // Documents 2 and 3: the same blank PDFs for everyone. Upload them to public/documents/ with these file names;
+  // until a file is there, the email is sent without it.
+  documents: [
+    { file: "worksheet.pdf", name: "Stellar Origins worksheet.pdf" },
+    { file: "perspective-cue-cards.pdf", name: "Stellar Origins perspective cue cards.pdf" },
+  ],
 };

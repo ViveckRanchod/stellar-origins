@@ -84,3 +84,19 @@ export async function resumePath() {
   if (answer("avatar")) await rememberCharacter(answer("avatar").avatar, answer("customize")?.accessory);
   return flow.find((f) => !done.has(f.step))?.path ?? "/done";
 }
+
+// Everything the feedback report PDF needs for the signed-in student.
+export async function reportData() {
+  const { db, user } = await requireUser();
+  const [{ data }, scores] = await Promise.all([db.from("responses").select("step, answer"), galaxyScores()]);
+  const m = user.user_metadata;
+  return {
+    user,
+    report: {
+      name: `${m.first_name ?? ""} ${m.last_name ?? ""}`.trim(),
+      date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
+      scores,
+      answers: Object.fromEntries(data?.map((r) => [r.step, r.answer]) ?? []),
+    },
+  };
+}
