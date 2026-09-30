@@ -1051,7 +1051,7 @@ class InfiniteGridMenu {
 interface InfiniteMenuProps {
   items: MenuItem[];
   scale?: number;
-  hint?: React.ReactNode; // shown until something is chosen
+  hint?: React.ReactNode; // always shown over the menu
   chosen?: number | null;
   onChoose?: (index: number) => void;
 }
@@ -1099,9 +1099,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
 
       {hint && (
         <p
-          className={`pointer-events-none absolute left-1/2 top-3 w-max -translate-x-1/2 rounded-full bg-black/70 px-3 py-1.5 text-center font-mono text-xs uppercase tracking-wider text-lilac transition-opacity duration-500 ${
-            chosen != null ? 'opacity-0' : 'animate-pulse opacity-100'
-          }`}
+          className={`pointer-events-none absolute left-1/2 top-3 w-max -translate-x-1/2 rounded-full bg-black/70 px-3 py-1.5 text-center font-mono text-xs uppercase tracking-wider text-lilac animate-pulse`}
         >
           {hint}
         </p>
