@@ -399,7 +399,7 @@ export const intermission2 = {
 
 // 10. Disruptions. Ids d1–d4 must match supabase/schema.sql. Each student is handed one, in turn (d1, d2, d3, d4, d1, …).
 // `description` is a list of paragraphs.
-export const disruptions: Record<string, { name: string; description: string[]; image: string }> = {
+export const disruptions: Record<string, { name: string; description: string[] }> = {
   d1: {
     name: "Restructuring",
     description: [
@@ -408,7 +408,6 @@ export const disruptions: Record<string, { name: string; description: string[]; 
       "However, the new structure has not been finalised yet. Leadership says there is “some overlap in HR support roles”, but no one can tell you exactly what this means for your position. Your manager tells you privately that she does not yet know whether your role will continue as it is, change significantly, or disappear altogether.",
       "You support the change, but you are now uncertain where you fit in the future you helped advocate for.",
     ],
-    image: "",
   },
   d2: {
     name: "Project cancellation",
@@ -419,7 +418,6 @@ export const disruptions: Record<string, { name: string; description: string[]; 
       "Your project did not fail. However, the work you cared about is no longer a priority, and the organisation has moved on.",
       "You still believe employee wellbeing matters. You are now left wondering how, or whether, you can continue pursuing that purpose through your work.",
     ],
-    image: "",
   },
   d3: {
     name: "Leadership change",
@@ -430,7 +428,6 @@ export const disruptions: Record<string, { name: string; description: string[]; 
       "Within your first month, you are asked to provide more frequent reports, justify decisions that previously required little explanation and obtain approval for changes you would previously have made independently.",
       "Nothing about your job title has changed. But the way you experience and perform your work has.",
     ],
-    image: "",
   },
   d4: {
     name: "Resource cut",
@@ -441,7 +438,6 @@ export const disruptions: Record<string, { name: string; description: string[]; 
       "You are now expected to deliver similar outcomes with significantly fewer resources. No one has suggested that the programme is unimportant, but the way you can deliver it has fundamentally changed.",
       "You still believe the work matters. You now have to decide what that means when you cannot do the work in the same way.",
     ],
-    image: "",
   },
 };
 
@@ -503,9 +499,14 @@ export const disruption = {
 
 // 14. Final screen + results email
 export const final = {
-  title: "Thanks for participating!",
-  message: "Check your inbox for your results. If it isn’t there in a few minutes, check your spam or junk folder too.",
-  closing: "TODO: Optional closing line.",
+  title: "You’ve Reached the End of Your Journey",
+  thanks: [
+    "Thank you for joining us on Stellar Origins and for taking the time to explore what makes work and life meaningful to you.",
+    "We hope you’ve enjoyed the journey, discovered something new about yourself, and perhaps left with a few questions worth carrying forward.",
+    "Remember, your path may change, your priorities may evolve, and your galaxy may look different over time. Meaning is not something you find once and keep forever. It is something you continue to create, discover and shape along the way.",
+    "Thank you for journeying with us.",
+  ],
+  message: "Check your inbox for your results. If it isn’t there in a few minutes, please check your spam or junk folder.",
   restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins results",

@@ -1,4 +1,4 @@
-import { LinkButton, Notice, Page, Picture } from "@/components/kit";
+import { LinkButton, Notice, Page } from "@/components/kit";
 import { disruption, disruptions } from "@/content";
 import { pageUser } from "@/lib/supabase";
 
@@ -23,13 +23,10 @@ export default async function DisruptionPage({ searchParams }: PageProps<"/disru
 
   return (
     <Page badge={disruption.activityName} title={d.name}>
-      <div className="panel flex flex-col items-center gap-6 p-6 sm:p-8">
-        <Picture src={d.image} label={d.name} className="max-w-40" />
-        <div className="flex flex-col gap-4 text-ash">
-          {d.description.map((para) => (
-            <p key={para}>{para}</p>
-          ))}
-        </div>
+      <div className="panel flex flex-col gap-4 p-6 text-ash sm:p-8">
+        {d.description.map((para) => (
+          <p key={para}>{para}</p>
+        ))}
       </div>
       <LinkButton href="/disruption/questions">{disruption.assignedButton}</LinkButton>
     </Page>
