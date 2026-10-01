@@ -1,7 +1,5 @@
-import { restart } from "@/app/actions";
-import { Submit, Title } from "@/components/kit";
+import { Title } from "@/components/kit";
 import { final, landing } from "@/content";
-import { browseAll } from "@/lib/supabase";
 
 // 14. Final screen
 export default function DonePage() {
@@ -15,11 +13,6 @@ export default function DonePage() {
         ))}
       </div>
       <p className="text-sm text-fog">{final.message}</p>
-      {browseAll && (
-        <form action={restart} className="mt-6 flex flex-col">
-          <Submit>{final.restart}</Submit>
-        </form>
-      )}
       {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, same as the landing page */}
       <img src={landing.logo} alt={landing.logoAlt} width={480} height={606} className="mt-4 h-auto w-36 sm:w-44" />
     </main>
