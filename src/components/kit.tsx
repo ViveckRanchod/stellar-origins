@@ -49,6 +49,7 @@ export function Page({
   subtitle,
   wide,
   hideCharacter,
+  back,
   children,
 }: {
   badge?: string;
@@ -56,11 +57,12 @@ export function Page({
   subtitle?: string;
   wide?: boolean;
   hideCharacter?: boolean;
+  back?: React.ReactNode; // replaces the usual step-by-step Back link
   children?: React.ReactNode;
 }) {
   return (
     <main className={cn("mx-auto flex flex-col gap-6 px-4 py-4 sm:gap-8 sm:px-6 sm:py-12", wide ? "max-w-4xl" : "max-w-xl")}>
-      <BackLink />
+      {back ?? <BackLink />}
       {!hideCharacter && <MyCharacter />}
       <header className="flex flex-col items-center gap-4 text-center">
         {badge && <span className="badge">{badge}</span>}
