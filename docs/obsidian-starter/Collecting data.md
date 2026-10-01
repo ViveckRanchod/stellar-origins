@@ -5,7 +5,7 @@ Everyone's answers are stored in **Supabase** (the site's database).
 1. Go to https://supabase.com/dashboard and open the **stellar_origins** project.
 2. Click **SQL Editor** in the left menu, then **New query**.
 3. Open https://github.com/ViveckRanchod/stellar-origins/blob/main/docs/data-queries.sql
-   and copy ONE of the four queries (from its `-- 1.` line down to its `;`).
+   and copy ONE of the five queries, from its `-- 5.` (or `-- 1.` etc.) line down to its `;`. Query 5 is the easiest.
 4. Paste it into the editor and click **Run**.
 5. Click **Export** above the results, then **CSV**. Open it in Excel or Google Sheets.
 
@@ -15,6 +15,7 @@ Everyone's answers are stored in **Supabase** (the site's database).
 | 2 | Each student's galaxy percentages |
 | 3 | Which disruption each student got |
 | 4 | Everyone who signed up |
+| 5 | **One row per student with every answer in its own column** (best for a spreadsheet) |
 
 These queries only read data; they can't change or delete anything.
 
