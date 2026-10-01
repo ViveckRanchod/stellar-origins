@@ -517,9 +517,17 @@ export const final = {
   message: "Check your inbox for your results. If it isn’t there in a few minutes, please check your spam or junk folder.",
   restart: "Start again (testing only)",
   email: {
-    subject: "Your Stellar Origins results",
-    heading: "Thanks for taking part!",
-    intro: "Thanks for taking part in Stellar Origins! Your feedback report, worksheet and perspective cue cards are attached.",
+    subject: "Your Stellar Origins Journey",
+    // Wrap words in **double stars** for bold; a line break inside a paragraph is \n.
+    heading: "Thank you for taking part in **Stellar Origins: Luma’s Meaning Workshop**!",
+    message: [
+      "Thank you for taking part in **Stellar Origins: Luma’s Meaning Workshop**! 🌌",
+      "We hope you enjoyed the journey and found a few moments to pause, reflect and discover something new about what gives your work meaning.",
+      "As promised, we’ve attached your **Stellar Origins results and activity worksheets**. You can revisit them whenever you’d like, whether you want to reflect on your results, complete an activity you didn’t get to during the workshop, or simply explore your thoughts a little further in your own time.",
+      "Remember, there are no right or wrong answers. Your values, goals and sources of meaning can evolve as you do.",
+      "**Thank you for exploring your universe with us. We hope you continue to find meaning in the journey ahead. ✨**",
+      "Warmly,\nKaela and Kirithi",
+    ],
     button: "See your full results",
   },
   // Document 1, made for each student (PDF attached to the email).
