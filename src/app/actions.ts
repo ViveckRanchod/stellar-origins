@@ -110,8 +110,28 @@ async function emailResults() {
     if (pdf) attachments.push({ filename: d.name, content: pdf });
   }
 
-  await nodemailer
+  const sent = await nodemailer
     .createTransport({ service: "gmail", auth: { user, pass } })
     .sendMail({ from: `Stellar Origins <${user}>`, to: student.email, subject: final.email.subject, html, text, attachments })
     .catch((e) => console.error("Results email failed", e));
+  if (sent) await releaseDisruption(student.id);
+}
+
+// Once the results are emailed, the student's used disruption card is taken off the stack, so a retake draws the
+// next card in the rotation (any of the four) instead of the same one. Deleting, not freeing: a freed card would be
+// first in line and come straight back. The disruption is first saved with their answers (step "disruption"), so the
+// data export still knows which one they had. Students can't change the stack themselves, so this uses the admin key
+// (SUPABASE_SERVICE_ROLE_KEY, set on the live site only; skipped where it's missing).
+async function releaseDisruption(userId: string) {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!key) return console.warn("SUPABASE_SERVICE_ROLE_KEY not set, disruption card kept");
+  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, key, { auth: { persistSession: false } });
+  const { data: slot } = await admin.from("disruption_slots").select("disruption").eq("user_id", userId).maybeSingle();
+  if (!slot) return;
+  const saved = await admin
+    .from("responses")
+    .upsert({ user_id: userId, step: "disruption", answer: { disruption: slot.disruption }, updated_at: new Date().toISOString() });
+  if (saved.error) return console.error("Saving disruption failed, card kept", saved.error);
+  const { error } = await admin.from("disruption_slots").delete().eq("user_id", userId);
+  if (error) console.error("Releasing disruption card failed", error);
 }

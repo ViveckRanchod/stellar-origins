@@ -29,14 +29,17 @@ group by u.id, u.email, first_name, last_name, galaxy
 order by u.email, answers desc;
 
 -- 3. Which disruption each student was given
+-- (Their card while in the activity; once their results email is sent it's saved as their "disruption" answer.)
 select
   u.email,
   u.raw_user_meta_data->>'first_name' as first_name,
   u.raw_user_meta_data->>'last_name'  as last_name,
-  s.disruption
-from public.disruption_slots s
-join auth.users u on u.id = s.user_id
-order by s.id;
+  coalesce(s.disruption, di.answer->>'disruption') as disruption
+from auth.users u
+left join public.disruption_slots s on s.user_id = u.id
+left join public.responses di on di.user_id = u.id and di.step = 'disruption'
+where coalesce(s.disruption, di.answer->>'disruption') is not null
+order by u.created_at;
 
 -- 4. Everyone who signed up (including people who have not answered yet)
 select
@@ -83,7 +86,7 @@ select
   quiz.b as "Phoenix Cluster %",
   quiz.c as "Nexus Point %",
   quiz.d as "Triangulum Galaxy %",
-  case s.disruption
+  case coalesce(s.disruption, di.answer->>'disruption')
     when 'd1' then 'Restructuring'
     when 'd2' then 'Project cancellation'
     when 'd3' then 'Leadership change'
@@ -101,6 +104,7 @@ left join r cu on cu.user_id = u.id and cu.step = 'customize'
 left join r fu on fu.user_id = u.id and fu.step = 'future'
 left join quiz on quiz.user_id = u.id
 left join public.disruption_slots s on s.user_id = u.id
+left join r di on di.user_id = u.id and di.step = 'disruption'
 left join r dq on dq.user_id = u.id and dq.step = 'disruption-questions'
 left join r gr on gr.user_id = u.id and gr.step = 'group'
 order by u.created_at;
