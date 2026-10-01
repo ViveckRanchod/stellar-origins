@@ -521,7 +521,6 @@ export const final = {
     "Thank you for journeying with us.",
   ],
   message: "Check your inbox for your results. If it isn’t there in a few minutes, please check your spam or junk folder.",
-  restart: "Start again (testing only)",
   email: {
     subject: "Your Stellar Origins Journey",
     // Wrap words in **double stars** for bold; a line break inside a paragraph is \n.
