@@ -1053,7 +1053,7 @@ interface InfiniteMenuProps {
   scale?: number;
   hint?: React.ReactNode; // always shown over the menu
   chosen?: number | null;
-  onChoose?: (index: number) => void;
+  onChoose?: (index: number | null) => void; // null = unchoose (the × button)
   onActive?: (index: number) => void; // the item currently in the centre
 }
 
@@ -1095,13 +1095,16 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
     };
   }, [items, scale]);
 
+  // Once chosen, the menu is locked: the canvas ignores touches so swipes scroll the page, and ✓ becomes × to unlock.
   const isChosen = active !== null && active === chosen;
 
   return (
     <div className="relative h-full w-full">
       <canvas
         ref={canvasRef}
-        className="relative h-full w-full cursor-grab touch-none overflow-hidden outline-none active:cursor-grabbing"
+        className={`relative h-full w-full overflow-hidden outline-none ${
+          isChosen ? 'pointer-events-none' : 'cursor-grab touch-none active:cursor-grabbing'
+        }`}
       />
 
       {hint && (
@@ -1115,9 +1118,8 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
       {active !== null && (
         <button
           type="button"
-          onClick={() => onChoose?.(active)}
-          aria-label="Choose this one"
-          aria-pressed={isChosen}
+          onClick={() => onChoose?.(isChosen ? null : active)}
+          aria-label={isChosen ? 'Unselect to choose another' : 'Choose this one'}
           className={`absolute left-1/2 z-10 grid size-14 -translate-x-1/2 place-items-center rounded-full text-2xl text-black transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)] ${
             isChosen ? 'bg-lavender ring-4 ring-white/60' : 'bg-white shadow-[0_0_24px_-4px_rgb(255_255_255/0.7)]'
           } ${
@@ -1126,7 +1128,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items, scale = 1.0, hint, chosen,
               : 'pointer-events-auto bottom-6 scale-100 opacity-100 duration-500'
           }`}
         >
-          ✓
+          {isChosen ? <span className="text-4xl leading-none">×</span> : '✓'}
         </button>
       )}
     </div>

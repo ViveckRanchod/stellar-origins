@@ -84,6 +84,8 @@ export const characterBuild = {
     // Hint over the spinning menu, shown until a character is chosen: touchscreens see the first, mice the second.
     hintTouch: "Press, hold and swipe to spin. Tap ✓ to choose.",
     hintMouse: "Click, hold and drag to spin. Click ✓ to choose.",
+    // Shown once chosen: the stars stop spinning so the page can scroll; × unlocks them.
+    hintLocked: "Star chosen. Tap × to pick another.",
     chosen: "Your star",
     notChosen: "Spin the stars and tap ✓ to choose one first.",
     justification: { text: "What about this one draws you to it? What does your choice represent or reflect about you?" } as Question,
