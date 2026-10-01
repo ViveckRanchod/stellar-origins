@@ -17,10 +17,14 @@ export function AvatarPicker() {
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-[60svh] max-h-[600px] min-h-[380px] w-full">
         <InfiniteMenu items={items} scale={1.2} hint={
-            <>
-              <span className="pointer-fine:hidden">{c.hintTouch}</span>
-              <span className="hidden pointer-fine:inline">{c.hintMouse}</span>
-            </>
+            chosen !== null ? (
+              c.hintLocked
+            ) : (
+              <>
+                <span className="pointer-fine:hidden">{c.hintTouch}</span>
+                <span className="hidden pointer-fine:inline">{c.hintMouse}</span>
+              </>
+            )
           } chosen={chosen} onChoose={setChosen}
           // Spinning to another star un-chooses the old one, so the star saved is always the one shown with ✓.
           onActive={(i) => setChosen((c) => (c === i ? c : null))} />
