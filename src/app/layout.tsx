@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import ClickSpark from "@/components/ClickSpark";
-import { DevNav } from "@/components/DevNav";
 import Galaxy from "@/components/Galaxy";
 import { RecoveryLink } from "@/components/RecoveryLink";
 import { site } from "@/content";
@@ -39,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           />
         </div>
         <RecoveryLink />
-        <DevNav />
+        {/* DevNav (page-jump menu for testing) hidden for everyone; add <DevNav /> back here to bring it back. */}
         {children}
         <ClickSpark sparkColor="#f4f0ff" sparkSize={10} sparkRadius={18} sparkCount={8} duration={400} />
       </body>
