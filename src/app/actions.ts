@@ -3,6 +3,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import nodemailer from "nodemailer";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
@@ -103,32 +104,24 @@ export async function submitFinal(form: FormData) {
   redirect("/done");
 }
 
-// Sends the results email via Resend (https://resend.com, free tier) if RESEND_API_KEY is set, with the
-// feedback report PDF and the blank documents attached. Failures are logged, never block the student.
+// Sends the results email from a Gmail account (GMAIL_USER + GMAIL_APP_PASSWORD, a Google "App password"),
+// with the feedback report PDF and the blank documents attached. Failures are logged, never block the student.
+// ponytail: Gmail caps at ~500 emails/day, fine for a workshop; move to a mail service with a domain if that's outgrown.
 async function emailResults() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) return console.warn("RESEND_API_KEY not set, skipping results email");
+  const { GMAIL_USER: user, GMAIL_APP_PASSWORD: pass } = process.env;
+  if (!user || !pass) return console.warn("GMAIL_USER / GMAIL_APP_PASSWORD not set, skipping results email");
 
   const origin = (await headers()).get("origin") ?? "https://stellar-origins.vercel.app";
   const { html, text } = resultsEmail(origin);
-  const { user, report } = await reportData();
-  const attachments = [{ filename: final.report.fileName, content: (await feedbackReport(report)).toString("base64") }];
+  const { user: student, report } = await reportData();
+  const attachments = [{ filename: final.report.fileName, content: await feedbackReport(report) }];
   for (const d of final.documents) {
     const pdf = await readFile(path.join(process.cwd(), "public/documents", d.file)).catch(() => null);
-    if (pdf) attachments.push({ filename: d.name, content: pdf.toString("base64") });
+    if (pdf) attachments.push({ filename: d.name, content: pdf });
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.EMAIL_FROM ?? "Stellar Origins <onboarding@resend.dev>",
-      to: [user.email],
-      subject: final.email.subject,
-      html,
-      text,
-      attachments,
-    }),
-  });
-  if (!res.ok) console.error("Results email failed", res.status, await res.text());
+  await nodemailer
+    .createTransport({ service: "gmail", auth: { user, pass } })
+    .sendMail({ from: `Stellar Origins <${user}>`, to: student.email, subject: final.email.subject, html, text, attachments })
+    .catch((e) => console.error("Results email failed", e));
 }
