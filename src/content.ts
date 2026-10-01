@@ -35,14 +35,18 @@ export const account = {
     lastName: { label: "Surname", placeholder: "" },
     password: { label: "Password", placeholder: "At least 6 characters" },
   },
+  // The privacy notice has its own page (/privacy), linked from sign-up and sign-in.
   // Paragraphs; wrap words in **double stars** for bold.
+  privacyTitle: "Privacy notice",
   privacyNotice: [
-    "**Privacy Notice:** To support the workshop experience, we collect limited information such as your **name, email address and activity responses**. This information is used to facilitate and simulate a realistic workplace meaning workshop and to support your participation throughout the digital experience.",
+    "To support the workshop experience, we collect limited information such as your **name, email address and activity responses**. This information is used to facilitate and simulate a realistic workplace meaning workshop and to support your participation throughout the digital experience.",
     "Your information will be **stored securely and treated confidentially**. It will only be accessed and used for purposes related to this workshop and will not be shared with third parties without appropriate permission.",
     "Your responses are intended to support **reflection and learning**, rather than to assess, diagnose or evaluate you personally. Please share only what you are comfortable sharing.",
     "By continuing, you acknowledge that you have read and understood this notice.",
   ],
-  privacyConsent: "I have read and agree to the privacy notice",
+  privacyConsent: "I have read and agree to the", // followed by the privacyLink link
+  privacyLink: "privacy notice",
+  privacyBack: "Back",
   button: "Create account",
   // Returning students
   loginTitle: "Welcome back",

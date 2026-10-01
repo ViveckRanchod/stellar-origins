@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requestReset, setPassword, signIn, signUp } from "@/app/actions";
-import { Notice, Page, Rich, Submit } from "@/components/kit";
+import { Notice, Page, Submit } from "@/components/kit";
 import { PasswordInput } from "@/components/PasswordInput";
+import { KeepDraft } from "@/components/PrivacyLinks";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { account } from "@/content";
@@ -44,6 +45,7 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
     <Page title={login ? account.loginTitle : account.title} subtitle={login ? undefined : account.intro}>
       <Notice>{error}</Notice>
       <form action={login ? signIn : signUp} className="panel flex flex-col gap-5 p-6 sm:p-8">
+        <KeepDraft />
         <Field name="email" type="email" autoComplete="email" {...f.email} />
         {!login && (
           <div className="grid gap-5 sm:grid-cols-2">
@@ -61,16 +63,14 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
         {!login && (
           <>
             <div className="aurora" />
-            <div className="flex flex-col gap-3 text-sm text-fog">
-              {account.privacyNotice.map((para) => (
-                <p key={para}>
-                  <Rich text={para} />
-                </p>
-              ))}
-            </div>
             <label className="flex items-start gap-3 text-sm text-ash">
               <input type="checkbox" name="privacy" required className="mt-0.5 accent-lavender" />
-              {account.privacyConsent}
+              <span>
+                {account.privacyConsent}{" "}
+                <Link href="/privacy?from=signup" className="text-lavender underline hover:text-lilac">
+                  {account.privacyLink}
+                </Link>
+              </span>
             </label>
           </>
         )}
@@ -83,6 +83,13 @@ export default async function SignupPage({ searchParams }: PageProps<"/signup">)
           {login ? "Create an account" : "Sign in"}
         </Link>
       </p>
+      {login && (
+        <p className="-mt-3 text-center text-sm text-fog">
+          <Link href="/privacy?from=login" className="text-lavender hover:text-lilac">
+            {account.privacyTitle}
+          </Link>
+        </p>
+      )}
     </Page>
   );
 }
