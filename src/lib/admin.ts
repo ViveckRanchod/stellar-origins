@@ -2,15 +2,13 @@ import { createClient } from "@supabase/supabase-js";
 import { admin, characterBuild, disruption, disruptions, galaxies, questions, type GalaxyId } from "@/content";
 import { supabase } from "@/lib/supabase";
 
-// Admin = an allowed email that signed in through the emailed link. Checking how they signed in matters:
-// "Confirm email" is off, so anyone could sign up with an admin's address and a password, but only the
-// real inbox owner gets the link.
+// Admin = signed in with one of the allowed emails.
+// ponytail: "Confirm email" is off, so an admin email nobody has signed up with yet could be claimed by anyone.
+// Both admins should have an account; turning email confirmation on closes this for good.
 export async function adminUser() {
   const { data } = await (await supabase()).auth.getClaims();
-  const c = data?.claims;
-  if (!c?.email || !admin.emails.includes(c.email.toLowerCase())) return null;
-  const viaEmail = c.amr?.some((a) => ["otp", "magiclink", "email/signup"].includes(typeof a === "string" ? a : a.method));
-  return viaEmail ? c.email : null;
+  const email = data?.claims.email?.toLowerCase();
+  return email && admin.emails.includes(email) ? email : null;
 }
 
 export type Student = {

@@ -59,19 +59,12 @@ export async function requestReset(form: FormData) {
   back("login", account.forgotSent); // same message whether or not the email exists
 }
 
-// Admin sign in (/admin): emails a sign-in link, only to the admin addresses. Same message either way.
+// Admin sign in (/admin): email + password, only for the admin addresses.
 export async function adminSignIn(form: FormData) {
   const email = String(form.get("email") ?? "").trim().toLowerCase();
-  if (admin.emails.includes(email)) {
-    const origin = (await headers()).get("origin");
-    // Implicit flow like requestReset; RecoveryLink (layout.tsx) signs in from the link and opens /admin.
-    const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-      auth: { flowType: "implicit", persistSession: false },
-    });
-    const { error } = await db.auth.signInWithOtp({ email, options: { emailRedirectTo: `${origin}/admin` } });
-    if (error) redirect(`/admin?error=${encodeURIComponent(error.message)}`);
-  }
-  redirect("/admin?sent=1");
+  if (!admin.emails.includes(email)) redirect(`/admin?error=${encodeURIComponent(admin.notAdmin)}`);
+  const { error } = await (await supabase()).auth.signInWithPassword({ email, password: String(form.get("password") ?? "") });
+  redirect(error ? `/admin?error=${encodeURIComponent(error.message)}` : "/admin");
 }
 
 export async function setPassword(form: FormData) {

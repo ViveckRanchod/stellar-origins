@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Download } from "lucide-react";
 import { adminSignIn } from "@/app/actions";
 import { Notice, Submit } from "@/components/kit";
+import { PasswordInput } from "@/components/PasswordInput";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +21,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const sp = await searchParams;
   const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
-  if (!(await adminUser())) return <Login sent={!!sp.sent} error={one(sp.error)} />;
+  if (!(await adminUser())) return <Login error={one(sp.error)} />;
 
   const all = await loadStudents();
   if (!all) return <Shell><Notice>SUPABASE_SERVICE_ROLE_KEY isn’t set here, so results can’t be read. It is set on the live site.</Notice></Shell>;
@@ -79,16 +80,19 @@ function Shell({ children }: { children: React.ReactNode }) {
   return <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-10">{children}</main>;
 }
 
-function Login({ sent, error }: { sent: boolean; error?: string }) {
+function Login({ error }: { error?: string }) {
   return (
     <main className="mx-auto flex max-w-md flex-col gap-6 px-4 py-16">
       <h1 className="text-center text-3xl tracking-tight">{admin.loginTitle}</h1>
-      <Notice>{error ?? (sent ? admin.sent : undefined)}</Notice>
+      <Notice>{error}</Notice>
       <form action={adminSignIn} className="panel flex flex-col gap-5 p-6 sm:p-8">
-        <p className="text-ash">{admin.loginText}</p>
         <div className="flex flex-col gap-2">
           <Label htmlFor="email" className="text-ash">Email</Label>
           <Input id="email" name="email" type="email" autoComplete="email" required className="h-11 sm:h-10" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="password" className="text-ash">Password</Label>
+          <PasswordInput id="password" name="password" autoComplete="current-password" required className="h-11 sm:h-10" />
         </div>
         <Submit>{admin.loginButton}</Submit>
       </form>

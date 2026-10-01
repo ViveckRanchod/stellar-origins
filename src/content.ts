@@ -557,9 +557,7 @@ export const admin = {
   timeZone: "Africa/Johannesburg", // decides which day (session) a student belongs to
   title: "Results overview",
   loginTitle: "Admin sign in",
-  loginText: "Enter your admin email and we’ll send you a sign-in link.",
-  loginButton: "Email me a link",
-  sent: "Check your inbox for the sign-in link.",
-  notAdmin: "This account can’t see results. Use the link from your admin email.",
+  loginButton: "Sign in",
+  notAdmin: "This email doesn’t have admin access.",
   accessories: { accessory_1: "Rocks", accessory_2: "Shooting star", accessory_3: "Skirt", accessory_4: "Planets", none: "No accessory" } as Record<string, string>,
 };
