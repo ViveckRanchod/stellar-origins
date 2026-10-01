@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
-import { account, final } from "@/content";
+import { account, admin, final } from "@/content";
 import { feedbackReport } from "@/lib/feedbackReport";
 import { resultsEmail } from "@/lib/resultsEmail";
 import { rememberCharacter, reportData, requireUser, resumePath, supabase } from "@/lib/supabase";
@@ -57,6 +57,14 @@ export async function requestReset(form: FormData) {
   const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/` });
   if (error) back("forgot", error.message);
   back("login", account.forgotSent); // same message whether or not the email exists
+}
+
+// Admin sign in (/admin): email + password, only for the admin addresses.
+export async function adminSignIn(form: FormData) {
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  if (!admin.emails.includes(email)) redirect(`/admin?error=${encodeURIComponent(admin.notAdmin)}`);
+  const { error } = await (await supabase()).auth.signInWithPassword({ email, password: String(form.get("password") ?? "") });
+  redirect(error ? `/admin?error=${encodeURIComponent(error.message)}` : "/admin");
 }
 
 export async function setPassword(form: FormData) {

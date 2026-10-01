@@ -550,3 +550,14 @@ export const final = {
     { file: "cue-cards.pdf", name: "Cue Cards and Full Image for Expanding your Universe Activity.pdf" },
   ],
 };
+
+// Admin results page (/admin): only these emails can sign in to it. Lowercase.
+export const admin = {
+  emails: ["panchoo.kirithi@gmail.com", "viveckranchod@gmail.com"],
+  timeZone: "Africa/Johannesburg", // decides which day (session) a student belongs to
+  title: "Results overview",
+  loginTitle: "Admin sign in",
+  loginButton: "Sign in",
+  notAdmin: "This email doesn’t have admin access.",
+  accessories: { accessory_1: "Rocks", accessory_2: "Shooting star", accessory_3: "Skirt", accessory_4: "Planets", none: "No accessory" } as Record<string, string>,
+};
