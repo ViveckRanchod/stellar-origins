@@ -521,11 +521,11 @@ export const final = {
     // Wrap words in **double stars** for bold; a line break inside a paragraph is \n.
     heading: "Thank you for taking part in **Stellar Origins: Luma’s Meaning Workshop**!",
     message: [
-      "Thank you for taking part in **Stellar Origins: Luma’s Meaning Workshop**! 🌌",
+      "Thank you for taking part in **Stellar Origins: Luma’s Meaning Workshop**!",
       "We hope you enjoyed the journey and found a few moments to pause, reflect and discover something new about what gives your work meaning.",
       "As promised, we’ve attached your **Stellar Origins results and activity worksheets**. You can revisit them whenever you’d like, whether you want to reflect on your results, complete an activity you didn’t get to during the workshop, or simply explore your thoughts a little further in your own time.",
       "Remember, there are no right or wrong answers. Your values, goals and sources of meaning can evolve as you do.",
-      "**Thank you for exploring your universe with us. We hope you continue to find meaning in the journey ahead. ✨**",
+      "**Thank you for exploring your universe with us. We hope you continue to find meaning in the journey ahead.**",
       "Warmly,\nKaela and Kirithi",
     ],
     button: "See your full results",
@@ -541,7 +541,7 @@ export const final = {
   // Documents 2 and 3: the same blank PDFs for everyone. Upload them to public/documents/ with these file names;
   // until a file is there, the email is sent without it.
   documents: [
-    { file: "worksheet.pdf", name: "Stellar Origins worksheet.pdf" },
-    { file: "perspective-cue-cards.pdf", name: "Stellar Origins perspective cue cards.pdf" },
+    { file: "worksheet.pdf", name: "Meaning Experiential Workshop Worksheet.pdf" },
+    { file: "cue-cards.pdf", name: "Cue Cards and Full Image for Expanding your Universe Activity.pdf" },
   ],
 };
