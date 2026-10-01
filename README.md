@@ -1,3 +1,39 @@
+# Stellar Origins
+
+## How the site flows
+
+Drawn from the site flow canvas. Diagram sources are the `.mmd` files in [docs/flows](docs/flows).
+
+### Whole site
+
+![Whole site](docs/flows/1-site-flow.png)
+
+### Character build
+
+![Character build](docs/flows/2-character-build.png)
+
+### Culture fit quiz and results
+
+![Culture fit quiz and results](docs/flows/3-culture-fit.png)
+
+### Disruption activity
+
+![Disruption activity](docs/flows/4-disruption-activity.png)
+
+### How each student gets a disruption
+
+![How each student gets a disruption](docs/flows/5-disruption-assignment.png)
+
+### Results email
+
+![Results email](docs/flows/6-feedback-email.png)
+
+### Where it runs
+
+![Where it runs](docs/flows/7-hosting.png)
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

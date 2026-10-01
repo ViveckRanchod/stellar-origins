@@ -1,0 +1,6 @@
+flowchart LR
+  GH[GitHub<br/>the code we own] --> V[Vercel<br/>the live website]
+  V <--> SB[(Supabase<br/>database)]
+  SB --- U[Users] --- AN[Answers] --- RS[Results]
+  SB --- DS[Disruption stack]
+  SB --- AV[Avatars / images]

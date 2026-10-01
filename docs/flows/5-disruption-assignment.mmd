@@ -1,0 +1,9 @@
+flowchart TD
+  A[Student hits Next] --> B{Signed in?}
+  B -- No --> P[Preview: sample disruption<br/>no card used]
+  B -- Yes --> C{Already has a card?}
+  C -- Yes --> SAME[Show the same disruption again]
+  C -- No --> D[Deal the lowest-numbered<br/>unused card from the stack]
+  STACK[(Stack of 100 cards<br/>d1, d2, d3, d4, d1, d2 ...)] -. deals from .-> D
+  D -- Got a card --> SHOW[Show their disruption]
+  D -- None left --> EMPTY[All disruptions assigned,<br/>ask a facilitator]
