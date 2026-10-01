@@ -33,7 +33,8 @@ export function AvatarPicker() {
         name="avatar"
         value={chosen === null ? "" : `avatar_${chosen + 1}`}
         onChange={() => {}}
-        onInvalid={(e) => e.currentTarget.setCustomValidity(c.notChosen)}
+        // Set on every render, so the "choose a star" message clears as soon as one is chosen.
+        ref={(el) => el?.setCustomValidity(chosen === null ? c.notChosen : "")}
         required
         tabIndex={-1}
         aria-hidden
