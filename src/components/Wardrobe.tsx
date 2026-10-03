@@ -10,9 +10,9 @@ const all = Array.from({ length: characters.accessories }, (_, i) => i + 1);
 
 // Game-style customiser: character on top, accessory grid below. One accessory (or none);
 // tapping one swaps the big picture to characterN/N.X.png. Posted as accessory=accessory_X or "none".
-export function Wardrobe({ character }: { character: number }) {
+export function Wardrobe({ character, saved = 0 }: { character: number; saved?: number }) {
   const c = characterBuild.customize;
-  const [picked, setPicked] = useState(0);
+  const [picked, setPicked] = useState(saved);
   // Only offer accessories whose pictures have been uploaded (a HEAD request downloads nothing).
   const [ready, setReady] = useState<number[]>([]);
   useEffect(() => {

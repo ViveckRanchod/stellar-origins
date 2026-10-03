@@ -1,19 +1,10 @@
 import { LinkButton, Notice, Page } from "@/components/kit";
-import { disruption, disruptions } from "@/content";
-import { pageUser } from "@/lib/supabase";
+import { disruption } from "@/content";
+import { myDisruption } from "@/lib/supabase";
 
-// 10. Assigned disruption. assign_disruption() pops the next slot from the stack
-// (see supabase/schema.sql) and returns the same one on every later visit.
+// 10. Assigned disruption. /disruption?d=d2 previews another one while signed out.
 export default async function DisruptionPage({ searchParams }: PageProps<"/disruption">) {
-  const { db, user } = await pageUser();
-  // Signed-out preview browsing: show a sample instead of using up a slot. /disruption?d=d2 previews another one.
-  const { d: sample } = await searchParams;
-  const { data: id, error } = user
-    ? await db.rpc("assign_disruption")
-    : { data: typeof sample === "string" && sample in disruptions ? sample : Object.keys(disruptions)[0], error: null };
-  if (error) throw error;
-
-  const d = disruptions[id as string];
+  const d = await myDisruption((await searchParams).d);
   if (!d)
     return (
       <Page badge={disruption.activityName} title={disruption.assignedTitle}>

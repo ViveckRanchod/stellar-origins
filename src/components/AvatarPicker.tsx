@@ -10,9 +10,13 @@ const items = Array.from({ length: characters.count }, (_, i) => ({
 }));
 
 // Spinning menu of the characters; the chosen one is posted as avatar=avatar_N.
-export function AvatarPicker() {
+// `saved` (0-based, NaN for none) is the star picked before: it stays the answer until another one is chosen.
+// ponytail: the menu doesn't spin round to the saved star, it's shown below it instead.
+export function AvatarPicker({ saved }: { saved?: number }) {
   const c = characterBuild.avatar;
   const [chosen, setChosen] = useState<number | null>(null);
+  const [kept, setKept] = useState(saved !== undefined && items[saved] ? saved : null);
+  const answer = chosen ?? kept;
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-[60svh] max-h-[600px] min-h-[380px] w-full">
@@ -25,25 +29,25 @@ export function AvatarPicker() {
                 <span className="hidden pointer-fine:inline">{c.hintMouse}</span>
               </>
             )
-          } chosen={chosen} onChoose={setChosen}
+          } chosen={chosen} onChoose={(i) => { setChosen(i); setKept(null); }}
           // Spinning to another star un-chooses the old one, so the star saved is always the one shown with ✓.
           onActive={(i) => setChosen((c) => (c === i ? c : null))} />
       </div>
       <input
         name="avatar"
-        value={chosen === null ? "" : `avatar_${chosen + 1}`}
+        value={answer === null ? "" : `avatar_${answer + 1}`}
         onChange={() => {}}
         // Set on every render, so the "choose a star" message clears as soon as one is chosen.
-        ref={(el) => el?.setCustomValidity(chosen === null ? c.notChosen : "")}
+        ref={(el) => el?.setCustomValidity(answer === null ? c.notChosen : "")}
         required
         tabIndex={-1}
         aria-hidden
         className="sr-only"
       />
-      {chosen !== null && (
+      {answer !== null && (
         <p className="flex items-center gap-3 text-sm text-lilac">
           {/* eslint-disable-next-line @next/next/no-img-element -- already optimised above */}
-          <img src={items[chosen].image} alt="" className="size-12 rounded-full bg-indigo object-contain" />
+          <img src={items[answer].image} alt="" className="size-12 rounded-full bg-indigo object-contain" />
           {c.chosen}
         </p>
       )}
