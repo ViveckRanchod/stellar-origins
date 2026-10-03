@@ -19,6 +19,7 @@ export async function GET() {
       avatar: { avatar: "avatar_2", justification: long },
       customize: { accessory: "accessory_1", justification: "It shows the path I want to follow." },
       future: { future: "Leading a small team", future_why: "", future_needs: "More confidence speaking up" },
+      disruption: { disruption: "d1" },
       "disruption-questions": { answer_1: long, answer_2: "It mostly changed how.", answer_3: long },
       group: { answer_1: "We all cared about different things.", answer_2: long, answer_3: "" },
     },

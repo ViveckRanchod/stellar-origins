@@ -465,6 +465,8 @@ export const disruption = {
   assignedTitle: "Your disruption",
   noneLeft: "All disruptions have been assigned. Please ask a facilitator.",
   assignedButton: "Continue",
+  viewButton: "View your disruption", // on the reflection page, opens the scenario again
+  closeButton: "Close",
 
   // 11. Individual reflection. Same questions for every disruption.
   // ponytail: shared list; for per-disruption questions, move this into each disruption above.
@@ -542,6 +544,7 @@ export const final = {
     characterTitle: "Your star",
     galaxiesTitle: "Your galaxies",
     answersTitle: "Your reflections",
+    disruptionTitle: "Your disruption",
   },
   // Documents 2 and 3: the same blank PDFs for everyone. Upload them to public/documents/ with these file names;
   // until a file is there, the email is sent without it.
@@ -553,7 +556,7 @@ export const final = {
 
 // Admin results page (/admin): only these emails can sign in to it. Lowercase.
 export const admin = {
-  emails: ["panchoo.kirithi@gmail.com", "viveckranchod@gmail.com"],
+  emails: ["panchoo.kirithi@gmail.com", "viveckranchod@gmail.com", "kaelacarstens@gmail.com"],
   timeZone: "Africa/Johannesburg", // decides which day (session) a student belongs to
   title: "Results overview",
   loginTitle: "Admin sign in",

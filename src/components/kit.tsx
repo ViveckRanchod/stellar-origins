@@ -122,12 +122,14 @@ export function TextField({
   placeholder,
   hint,
   required,
+  defaultValue,
 }: {
   name: string;
   label: string | Question;
   placeholder?: string;
   hint?: string;
   required?: boolean;
+  defaultValue?: string; // the earlier answer, when going back
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -135,7 +137,7 @@ export function TextField({
         <QuestionLabel q={typeof label === "string" ? { text: label } : label} />
       </Label>
       {hint && <p className="text-sm text-fog">{hint}</p>}
-      <Textarea id={name} name={name} placeholder={placeholder} required={required} rows={4} />
+      <Textarea id={name} name={name} placeholder={placeholder} required={required} rows={4} defaultValue={defaultValue} />
     </div>
   );
 }
@@ -159,8 +161,8 @@ function QuestionLabel({ q }: { q: Question }) {
 }
 
 // Renders a list of content questions: free text, or single choice when `options` is set.
-// Answers are stored as answer_1, answer_2, ... in question order.
-export function Questions({ items }: { items: Question[] }) {
+// Answers are stored as answer_1, answer_2, ... in question order; `saved` fills in earlier ones.
+export function Questions({ items, saved = {} }: { items: Question[]; saved?: Record<string, string | undefined> }) {
   return items.map((q, i) =>
     q.options ? (
       <fieldset key={i} className="flex flex-col gap-2">
@@ -169,13 +171,13 @@ export function Questions({ items }: { items: Question[] }) {
         </legend>
         {q.options.map((opt) => (
           <label key={opt} className="panel flex cursor-pointer items-center gap-3 px-4 py-3 text-ash has-checked:bg-indigo has-checked:text-lilac">
-            <input type="radio" name={`answer_${i + 1}`} value={opt} required className="accent-lavender" />
+            <input type="radio" name={`answer_${i + 1}`} value={opt} defaultChecked={saved[`answer_${i + 1}`] === opt} required className="accent-lavender" />
             {opt}
           </label>
         ))}
       </fieldset>
     ) : (
-      <TextField key={i} name={`answer_${i + 1}`} label={q} required />
+      <TextField key={i} name={`answer_${i + 1}`} label={q} defaultValue={saved[`answer_${i + 1}`]} required />
     ),
   );
 }

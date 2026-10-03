@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { galaxies, questions, type GalaxyId } from "@/content";
+import { disruptions, galaxies, questions, type GalaxyId } from "@/content";
 
 export async function supabase() {
   const store = await cookies();
@@ -45,6 +45,25 @@ export async function requireUser() {
   const user = await currentUser(db);
   if (!user) redirect("/signup?mode=login");
   return { db, user };
+}
+
+// The student's earlier answer to a step, so going Back shows it filled in. {} when there is none.
+export async function savedAnswer(step: string): Promise<Record<string, string | undefined>> {
+  const { db, user } = await pageUser();
+  if (!user) return {};
+  const { data } = await db.from("responses").select("answer").eq("step", step).maybeSingle();
+  return data?.answer ?? {};
+}
+
+// The student's disruption. assign_disruption() pops the next slot from the stack (see the schema) and returns
+// the same one on every later visit. Signed out (preview browsing) shows `sample` (d1–d4) or the first one,
+// without using up a slot. null = the stack is empty.
+export async function myDisruption(sample?: unknown) {
+  const { db, user } = await pageUser();
+  const fallback = typeof sample === "string" && sample in disruptions ? sample : Object.keys(disruptions)[0];
+  const { data: id, error } = user ? await db.rpc("assign_disruption") : { data: fallback, error: null };
+  if (error) throw error;
+  return disruptions[id as string] ?? null;
 }
 
 // Ordered steps: a returning student resumes at the page of their first unanswered step.
@@ -95,7 +114,14 @@ export async function resumePath() {
 // Everything the feedback report PDF needs for the signed-in student.
 export async function reportData() {
   const { db, user } = await requireUser();
-  const [{ data }, scores] = await Promise.all([db.from("responses").select("step, answer"), galaxyScores()]);
+  const [{ data }, scores, { data: slot }] = await Promise.all([
+    db.from("responses").select("step, answer"),
+    galaxyScores(),
+    // Still on the stack while the email is made (released after it's sent), so read it from there.
+    db.from("disruption_slots").select("disruption").eq("user_id", user.id).maybeSingle(),
+  ]);
+  const answers = Object.fromEntries(data?.map((r) => [r.step, r.answer]) ?? []);
+  if (slot) answers.disruption = { disruption: slot.disruption };
   const m = user.user_metadata;
   return {
     user,
@@ -103,7 +129,7 @@ export async function reportData() {
       name: `${m.first_name ?? ""} ${m.last_name ?? ""}`.trim(),
       date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
       scores,
-      answers: Object.fromEntries(data?.map((r) => [r.step, r.answer]) ?? []),
+      answers,
     },
   };
 }

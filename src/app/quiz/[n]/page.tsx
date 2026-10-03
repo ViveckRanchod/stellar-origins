@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { saveStep } from "@/app/actions";
 import { Page, Submit } from "@/components/kit";
 import { questions, quiz } from "@/content";
+import { savedAnswer } from "@/lib/supabase";
 
 // ponytail: sort-shuffle is slightly biased, fine for 4 options. A fresh order on every request is intended.
 const shuffle = <T,>(a: T[]) => a.toSorted(() => Math.random() - 0.5);
@@ -14,6 +15,7 @@ export default async function QuizPage({ params }: PageProps<"/quiz/[n]">) {
 
   const isLast = n === questions.length;
   const answers = shuffle(question.answers);
+  const saved = await savedAnswer(`q${n}`);
 
   return (
     <Page badge={quiz.activityName} title={question.text}>
@@ -30,7 +32,7 @@ export default async function QuizPage({ params }: PageProps<"/quiz/[n]">) {
             className="panel flex cursor-pointer items-center gap-3 px-5 py-4 text-ash transition-colors hover:bg-indigo has-checked:bg-indigo has-checked:text-lilac has-checked:ring-1 has-checked:ring-lavender"
           >
             {/* Only the galaxy id is stored, so answer text can be edited later without breaking results */}
-            <input type="radio" name="galaxy" value={a.galaxy} required className="accent-lavender" />
+            <input type="radio" name="galaxy" value={a.galaxy} defaultChecked={saved.galaxy === a.galaxy} required className="accent-lavender" />
             {a.text}
           </label>
         ))}

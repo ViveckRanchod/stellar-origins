@@ -6,6 +6,7 @@ import {
   characterBuild,
   characterImage,
   disruption,
+  disruptions,
   final,
   galaxies,
   galaxyHeadings,
@@ -65,7 +66,8 @@ const file = (publicPath: string) =>
 function reflections(a: Record<string, Answer>) {
   const f = characterBuild.future;
   const list = (step: string, items: Question[]) => items.map((q, i): QA => [q, a[step]?.[`answer_${i + 1}`]]);
-  const groups: { heading: string; items: QA[] }[] = [
+  const d = disruptions[String(a.disruption?.disruption)];
+  const groups: { heading: string; intro?: string[]; items: QA[] }[] = [
     {
       heading: characterBuild.activityName,
       items: [
@@ -81,12 +83,13 @@ function reflections(a: Record<string, Answer>) {
         [{ text: f.needs }, a.future?.future_needs],
       ],
     },
+    ...(d ? [{ heading: `${final.report.disruptionTitle}: ${d.name}`, intro: d.description, items: [] }] : []),
     { heading: disruption.questions.title, items: list("disruption-questions", disruption.questions.items) },
     { heading: disruption.chat.title, items: list("group", disruption.chat.items) },
   ];
   return groups
     .map((g) => ({ ...g, items: g.items.filter(([, ans]) => String(ans ?? "").trim()) }))
-    .filter((g) => g.items.length);
+    .filter((g) => g.items.length || g.intro);
 }
 
 export async function feedbackReport({ name, date, scores, answers }: ReportData) {
@@ -166,6 +169,7 @@ export async function feedbackReport({ name, date, scores, answers }: ReportData
           <View key={group.heading} break={gi === 0}>
             {gi === 0 && <Text style={s.title}>{r.answersTitle}</Text>}
             <Text style={s.h2}>{group.heading}</Text>
+            {group.intro?.map((para) => <Text key={para} style={{ marginBottom: 8 }}>{para}</Text>)}
             {group.items.map(([q, ans]) => (
               <View key={q.text} style={s.qa} wrap={false}>
                 {q.title && <Text style={s.bold}>{q.title}</Text>}
