@@ -102,7 +102,7 @@ function Login({ error }: { error?: string }) {
 
 function FilterLink({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
-    <Link href={href} aria-current={active ? "page" : undefined} className={cn("truncate rounded-[5px] px-2 py-1.5 text-sm text-ash hover:bg-indigo hover:text-lilac", active && "bg-indigo text-lilac")}>
+    <Link href={href} aria-current={active ? "page" : undefined} className={cn("shrink-0 truncate rounded-[5px] px-2 py-1.5 text-sm text-ash hover:bg-indigo hover:text-lilac", active && "bg-indigo text-lilac")}>
       {children}
     </Link>
   );
