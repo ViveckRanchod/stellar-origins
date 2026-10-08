@@ -62,11 +62,16 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
         <div className="grid gap-6 lg:grid-cols-[1fr_260px]">
           <div className="flex min-w-0 flex-col gap-6">{selected ? <StudentDetail s={selected} day={day} msg={one(sp.msg)} /> : <Overview students={students} />}</div>
           <aside className="panel order-first flex max-h-[70vh] flex-col gap-1 self-start overflow-y-auto p-3 lg:order-none lg:sticky lg:top-6">
-            <h2 className="px-2 pb-2 font-mono text-xs tracking-widest text-fog uppercase">Students ({students.length})</h2>
+            <h2 className="px-2 pb-2 font-mono text-xs tracking-widest text-fog uppercase">
+              Students ({students.length}) · {students.filter((s) => !s.answers.group).length} not finished
+            </h2>
             <FilterLink href={`/admin?day=${day}`} active={!selected}>All students</FilterLink>
             {students.map((s) => (
               <FilterLink key={s.id} href={`/admin?day=${day}&user=${s.id}`} active={s.id === selected?.id}>
-                {`${s.first} ${s.last}`.trim() || s.email}
+                <span className="flex items-center justify-between gap-2">
+                  <span className="truncate">{`${s.first} ${s.last}`.trim() || s.email}</span>
+                  {!s.answers.group && <span className="shrink-0 rounded-[4px] bg-[#d95926]/20 px-1.5 text-xs text-[#f0a07e]">Not finished</span>}
+                </span>
               </FilterLink>
             ))}
           </aside>

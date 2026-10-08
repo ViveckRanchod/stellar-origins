@@ -86,6 +86,7 @@ export const columns: [string, (s: Student) => string | number | undefined][] = 
   ["Surname", (s) => s.last],
   ["Email", (s) => s.email],
   ["Signed up", (s) => new Date(s.created).toLocaleString("en-GB", { timeZone: admin.timeZone })],
+  ["Reached the end", (s) => (s.answers.group ? "Yes" : "No")],
   [`${cb.avatar.title}: star chosen`, (s) => s.answers.avatar?.avatar?.replace("avatar_", "Star ")],
   ["Why this star", (s) => s.answers.avatar?.justification],
   [`${cb.customize.title}: accessory`, (s) => admin.accessories[s.answers.customize?.accessory]],
