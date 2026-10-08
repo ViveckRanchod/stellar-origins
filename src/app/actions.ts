@@ -7,8 +7,9 @@ import nodemailer from "nodemailer";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
-import { account, admin, final } from "@/content";
-import { feedbackReport } from "@/lib/feedbackReport";
+import { account, admin, final, type GalaxyId } from "@/content";
+import { adminUser, alreadyEmailed, loadStudents } from "@/lib/admin";
+import { feedbackReport, type ReportData } from "@/lib/feedbackReport";
 import { resultsEmail } from "@/lib/resultsEmail";
 import { rememberCharacter, reportData, requireUser, resumePath, supabase } from "@/lib/supabase";
 
@@ -106,12 +107,17 @@ export async function submitFinal(form: FormData) {
 // with the feedback report PDF and the blank documents attached. Failures are logged, never block the student.
 // ponytail: Gmail caps at ~500 emails/day, fine for a workshop; move to a mail service with a domain if that's outgrown.
 async function emailResults() {
+  const { user: student, report } = await reportData();
+  if (await sendResults(student.email!, report)) await releaseDisruption(student.id);
+}
+
+// Returns true once the email is sent.
+async function sendResults(to: string, report: ReportData) {
   const { GMAIL_USER: user, GMAIL_APP_PASSWORD: pass } = process.env;
-  if (!user || !pass) return console.warn("GMAIL_USER / GMAIL_APP_PASSWORD not set, skipping results email");
+  if (!user || !pass) return console.warn("GMAIL_USER / GMAIL_APP_PASSWORD not set, skipping results email"), false;
 
   const origin = (await headers()).get("origin") ?? "https://stellar-origins.vercel.app";
   const { html, text } = resultsEmail(origin);
-  const { user: student, report } = await reportData();
   const attachments = [{ filename: final.report.fileName, content: await feedbackReport(report) }];
   for (const d of final.documents) {
     const pdf = await readFile(path.join(process.cwd(), "public/documents", d.file)).catch(() => null);
@@ -120,9 +126,29 @@ async function emailResults() {
 
   const sent = await nodemailer
     .createTransport({ service: "gmail", auth: { user, pass } })
-    .sendMail({ from: `Stellar Origins <${user}>`, to: student.email, subject: final.email.subject, html, text, attachments })
+    .sendMail({ from: `Stellar Origins <${user}>`, to, subject: final.email.subject, html, text, attachments })
     .catch((e) => console.error("Results email failed", e));
-  if (sent) await releaseDisruption(student.id);
+  return !!sent;
+}
+
+// Admin "Send results email" for a student who didn't finish. Never sends to anyone who reached the end
+// (step "group"), was already emailed (step "disruption" is saved after a results email), or was sent one from here ("emailed").
+export async function adminSendResults(form: FormData) {
+  if (!(await adminUser())) redirect("/admin");
+  const back = (msg: string) => redirect(`/admin?day=${form.get("day")}&user=${form.get("user")}&msg=${encodeURIComponent(msg)}`);
+  const s = (await loadStudents())?.find((x) => x.id === form.get("user"));
+  if (!s) back("Student not found.");
+  if (alreadyEmailed(s!)) back("Not sent: this student already got their results.");
+
+  const scores = (Object.keys(s!.scores) as GalaxyId[]).map((id) => ({ id, percent: s!.scores[id] })).sort((a, b) => b.percent - a.percent);
+  const answers = { ...s!.answers, ...(s!.disruption && { disruption: { disruption: s!.disruption } }) };
+  const date = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  if (!(await sendResults(s!.email, { name: `${s!.first} ${s!.last}`.trim(), date, scores, answers }))) back("Sending failed. Try again in a minute.");
+
+  await releaseDisruption(s!.id);
+  const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
+  await db.from("responses").upsert({ user_id: s!.id, step: "emailed", answer: { by: "admin" }, updated_at: new Date().toISOString() });
+  back(`Results emailed to ${s!.email}.`);
 }
 
 // Once the results are emailed, the student's used disruption card is taken off the stack, so a retake draws the
