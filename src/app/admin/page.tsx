@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Download } from "lucide-react";
-import { adminSignIn } from "@/app/actions";
+import { adminSendResults, adminSignIn } from "@/app/actions";
 import { Notice, Submit } from "@/components/kit";
 import { PasswordInput } from "@/components/PasswordInput";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { admin, characterBuild, characters, disruption, disruptions, galaxies, questions, type GalaxyId } from "@/content";
-import { adminUser, columns, loadStudents, topGalaxy, type Student } from "@/lib/admin";
+import { adminUser, alreadyEmailed, columns, loadStudents, topGalaxy, type Student } from "@/lib/admin";
 import { cn } from "@/lib/utils";
 
 // Chart colours in fixed order, checked for colour-blind separation on the dark panel. A thing keeps its colour.
@@ -60,7 +60,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
         <p className="panel p-6 text-ash">No students have signed up yet.</p>
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1fr_260px]">
-          <div className="flex min-w-0 flex-col gap-6">{selected ? <StudentDetail s={selected} day={day} /> : <Overview students={students} />}</div>
+          <div className="flex min-w-0 flex-col gap-6">{selected ? <StudentDetail s={selected} day={day} msg={one(sp.msg)} /> : <Overview students={students} />}</div>
           <aside className="panel order-first flex max-h-[70vh] flex-col gap-1 self-start overflow-y-auto p-3 lg:order-none lg:sticky lg:top-6">
             <h2 className="px-2 pb-2 font-mono text-xs tracking-widest text-fog uppercase">Students ({students.length})</h2>
             <FilterLink href={`/admin?day=${day}`} active={!selected}>All students</FilterLink>
@@ -202,7 +202,7 @@ function Overview({ students }: { students: Student[] }) {
   );
 }
 
-function StudentDetail({ s, day }: { s: Student; day: string }) {
+function StudentDetail({ s, day, msg }: { s: Student; day: string; msg?: string }) {
   return (
     <>
       <div className="flex flex-col gap-1">
@@ -210,6 +210,17 @@ function StudentDetail({ s, day }: { s: Student; day: string }) {
         <h2 className="text-2xl">{`${s.first} ${s.last}`.trim() || s.email}</h2>
         <p className="text-ash">{s.email}</p>
       </div>
+      <Notice>{msg}</Notice>
+      {alreadyEmailed(s) ? (
+        <p className="text-sm text-fog">Results email: already sent.</p>
+      ) : (
+        <form action={adminSendResults} className="panel flex flex-wrap items-center justify-between gap-3 p-4">
+          <input type="hidden" name="day" value={day} />
+          <input type="hidden" name="user" value={s.id} />
+          <span className="text-sm text-ash">Didn’t finish, so no results email yet. Send what they have so far?</span>
+          <button className={cn(buttonVariants(), "h-10")}>Send results email</button>
+        </form>
+      )}
       <Section title="Galaxies">
         <Bars max={100} suffix="%" rows={galaxyIds.map((g) => [galaxies[g].name, s.scores[g], galaxyColor(g)])} />
       </Section>

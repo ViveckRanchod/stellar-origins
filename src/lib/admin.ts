@@ -70,6 +70,9 @@ export async function loadStudents(): Promise<Student[] | null> {
     .sort((a, b) => a.created.localeCompare(b.created));
 }
 
+// Reached the end (results emailed automatically), or already sent their results.
+export const alreadyEmailed = (s: Student) => !!(s.answers.group || s.answers.disruption || s.answers.emailed);
+
 export const topGalaxy = (s: Student) =>
   Object.values(s.scores).some(Boolean) ? (Object.keys(s.scores) as GalaxyId[]).sort((a, b) => s.scores[b] - s.scores[a])[0] : undefined;
 
